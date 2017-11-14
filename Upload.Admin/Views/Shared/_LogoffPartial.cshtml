@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <li class="">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <a title="" href="javascript:document.getElementById('logoutForm').submit()"><i class="icon icon-signout"></i> <span class="text">Logout</span></a>
+        }
+    </li>
+}
+

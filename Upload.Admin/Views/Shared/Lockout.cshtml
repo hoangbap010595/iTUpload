@@ -1,0 +1,14 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Locked Out";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<div id="loginbox">
+    <hgroup>
+        <h3 class="text-danger">Truy cập thất bại.</h3>
+        <h5 class="text-danger">Tài khoản này đã bị khóa, Vui lòng thử lại sau.</h5>
+    </hgroup>
+    <span><a href="/Account/Login" class="flip-link btn btn-success" id="to-login2">&laquo; Quay lại trang đăng nhập</a></span>
+</div>

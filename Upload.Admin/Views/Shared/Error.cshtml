@@ -1,0 +1,33 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Error.cshtml";
+}
+<style>
+    .error_ex{
+        text-align: left;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon"> <i class="icon-info-sign"></i> </span>
+                    <h5>Error</h5>
+                </div>
+                <div class="widget-content">
+                    <div class="error_ex">
+                        <a class="btn btn-warning btn-big" href="/Home/Index">Back to Home</a>
+                        <h1 class="text-danger">Error</h1>
+                        <h4 class="text-danger">An error occurred while processing your request.</h4>
+                        <strong>#Controller</strong><span style="font-weight:bold;font-size:18px;">: @Model.ControllerName</span><br />
+                        <strong>#Action</strong><span style="font-weight:bold;font-size:18px;">: @Model.ActionName</span><br />
+                        <strong>#Exception</strong><br /><span style="font-weight:bold;font-size:12px;color: red;">@Model.Exception</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

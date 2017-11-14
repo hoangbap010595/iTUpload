@@ -1,0 +1,44 @@
+﻿@using Upload.Admin.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+<div id="loginbox">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-vertical", id = "loginform", role = "form" }))
+    {
+        <div class="control-group normal_text"> <h3><img src="~/Img/logo.png" alt="Logo" /></h3></div>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="main_input_box">
+                            <span class="add-on bg_lg"><i class="icon-user"></i></span>
+                            @Html.TextBoxFor(m => m.Email, new { placeholder = "Tên đăng nhập", value = "a@gmail.com" })
+                            @*<input type="text" placeholder="Username" />*@
+                            <br />@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="main_input_box">
+                            <span class="add-on bg_ly"><i class="icon-lock"></i></span>
+                            @Html.PasswordFor(m => m.Password, new { placeholder = "Mật khẩu", value = "Omega@111" })
+                            <br />@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                @Html.ValidationSummary()
+                <div class="form-actions">
+                    <span class="pull-left"><a href="/Account/ForgotPassword" class="flip-link btn btn-info" id="to-recover">Quên mật khẩu</a></span>
+                    <span class="pull-right"><button type="submit" class="btn btn-success">Đăng nhập</button></span>
+                    <span class="pull-right"><a href="/Account/Register" class="flip-link btn btn-danger" id="to-register">Đăng ký</a></span>
+                </div>
+                @Html.AntiForgeryToken()
+    }
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

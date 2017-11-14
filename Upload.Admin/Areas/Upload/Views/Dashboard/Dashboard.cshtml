@@ -1,0 +1,33 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Matrix.cshtml";
+}
+<style type="text/css">
+    .widget-box{
+        margin-top: 0;
+    } 
+</style>
+<script type="text/javascript">
+    $("#dashboard").addClass("active");
+</script>
+<div class="widget-box">
+    <div class="widget-title">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab1">Spread Shirt</a></li>
+            <li><a data-toggle="tab" href="#tab2">Sunfrog Shirts</a></li>
+            @*<li><a data-toggle="tab" href="#tab3">Tab3</a></li>*@
+        </ul>
+    </div>
+    <div class="widget-content tab-content">
+        <div id="tab1" class="tab-pane active">
+            <p>And is full of waffle to It has multiple paragraphs and is full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end.multiple paragraphs and is full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end.multiple paragraphs and is full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end. </p>
+        </div>
+        <div id="tab2" class="tab-pane">
+            <p> waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end.multiple paragraphs and is full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end. </p>
+        </div>
+        @*<div id="tab3" class="tab-pane">
+            <p>full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end.multiple paragraphs and is full of waffle to pad out the comment. Usually, you just wish these sorts of comments would come to an end. </p>
+        </div>*@
+    </div>
+</div>
