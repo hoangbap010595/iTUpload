@@ -76,6 +76,9 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -125,7 +128,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Upload\Controllers\SpreadShirtController.cs" />
+    <Compile Include="Areas\Upload\Models\ApplicationUser.cs" />
     <Compile Include="Areas\Upload\Models\CoreConfig.cs" />
+    <Compile Include="Areas\Upload\Models\OShop.cs" />
     <Compile Include="Areas\Upload\UploadAreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -137,7 +142,12 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Spread.pubxml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PartialView\PartialView.csproj">
+      <Project>{8ad0c4ee-0dba-4570-9425-d87c25448567}</Project>
+      <Name>PartialView</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

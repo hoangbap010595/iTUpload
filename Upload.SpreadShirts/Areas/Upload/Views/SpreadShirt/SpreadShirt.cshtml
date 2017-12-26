@@ -1,13 +1,11 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @{
     ViewBag.Title = "SpreadShirt";
-    Layout = "~/Views/Shared/_Matrix.cshtml";
+    Layout = "~/Views/Shared/_Theme.cshtml";
 }
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/SpreadShirt/spread-core.js"></script>
 <script src="~/Scripts/SpreadShirt/spread-login.js"></script>
 
-<h2>SpreadShirt</h2>
-<button class="btn btn-default" onclick="encodeUrl()">Encode</button>
-<button class="btn btn-default" onclick="loginSpread()">Login</button>
-
-<iframe src="https://partner.spreadshirt.com" height="500" width="700"></iframe>
+<button class="btn btn-success" id="login">Login</button>
