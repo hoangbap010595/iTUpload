@@ -155,7 +155,6 @@
     <Content Include="Areas\PartialView\Views\PartialView\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\PartialView.pubxml" />
   </ItemGroup>
   <PropertyGroup>

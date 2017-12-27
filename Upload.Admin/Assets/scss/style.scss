@@ -1,0 +1,274 @@
+//Login Page css
+//sass --watch scss\style.scss:css\style.css
+@import "login.scss";
+//bfdbff
+//8E24AA
+//37474F
+//Frontend Design
+$colorTextLogoApp: #f2d06f;
+//Backend Design
+$colorBackgroundPrimary: #D4D7DC;
+$colorBackgroundPrimary2: #FFFFFF;
+$colorBackgroundPrimaryShadow: rgba(84,110,122,0.79);
+$colorTextPrimary: #FFFFFF;
+$colorTextSecond: #3E4245;
+//Header
+$colorBackgroundHeader: #2C3E50;
+$colorBackgroundHeader2: #7F8C8D;
+//LeftMenu
+$colorBackgroundMenu: #1d2127;
+$colorTextMenu: #fafafa;
+$colorHoverMenu: #38b449;
+$colorBackgroundActiveMenu: #2F3135;
+$colorActiveMenu: #38b449;
+//Box dashboard
+$colorBackgroundBox: #FFFFFF;
+$colorTextBox: #38b449;
+
+body {
+    font-family: Avenir, 'Helvetica Neue', 'Lato', 'Segoe UI', Helvetica, Arial, sans-serif;
+    color: #4b0f31;
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.text-align-right {
+    text-align: right;
+}
+.box.box-solid.box-success,
+.box.box-solid.box-warning,
+.box.box-solid.box-default {
+    border: none !important;
+}
+
+.box.box-solid.box-default > .box-header,
+.box.box-solid.box-warning > .box-header {
+    color: $colorTextSecond !important;
+    background: linear-gradient(to bottom right, $colorBackgroundPrimary, $colorBackgroundPrimary2) !important;
+    -webkit-box-shadow: 0px 0px 15px 0px $colorBackgroundPrimaryShadow;
+    -moz-box-shadow: 0px 0px 15px 0px $colorBackgroundPrimaryShadow;
+    box-shadow: 0px 0px 15px 0px $colorBackgroundPrimaryShadow;
+    margin-bottom: 15px;
+}
+
+.bg-ctrl-header {
+    background: linear-gradient(to bottom right, $colorBackgroundHeader, $colorBackgroundHeader2);
+    color: $colorTextPrimary;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+}
+
+.bg-primary {
+    //Màu button chính
+    background-color: #FFAB00;
+    color: #fff !important;
+}
+
+.bg-second {
+    //Màu button phụ
+    background-color: #64DD17;
+    color: #fff !important;
+}
+
+.bg-third {
+    //Màu button thứ 3
+    background-color: #C62828;
+    color: #fff !important;
+}
+
+// <!--small box -->
+.box-bg-primary {
+    color: $colorTextBox;
+    box-shadow: 0 2px 0 0 $colorTextBox inset;
+    background-color: $colorBackgroundBox !important;
+
+    &:hover {
+        color: $colorTextBox !important;
+    }
+}
+
+.small-box > .small-box-footer {
+    background: rgba(0, 0, 0, 0.6) !important;
+}
+
+.small-box .icon {
+    color: rgba(56, 180, 73,0.6) !important;
+}
+//end
+//color header
+.skin-blue .main-header .navbar,
+.skin-blue .main-header li.user-header {
+    background: linear-gradient(to bottom right, $colorBackgroundHeader, $colorBackgroundHeader2);
+}
+//Left side menu
+.skin-blue .main-header .logo,
+.skin-blue .main-sidebar {
+    //background munu left
+    background-color: $colorBackgroundMenu;
+    &:hover{
+    	background-color: $colorBackgroundMenu;
+    }
+}
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+	background-color: $colorHoverMenu !important;
+}
+.skin-blue .sidebar-menu > li > .treeview-menu {
+    background: $colorBackgroundMenu;
+}
+//end
+.skin-blue .sidebar a, .skin-blue .sidebar-menu .treeview-menu > li > a {
+    color: $colorTextMenu;
+}
+
+//Màu chính của menu khi active
+.skin-blue .sidebar-menu > li:hover > a, .skin-blue .sidebar-menu > li.active > a, .skin-blue .sidebar-menu > li.menu-open > a {
+    color: $colorActiveMenu;
+    background: $colorBackgroundActiveMenu;
+    box-shadow: 2px 0 0 $colorActiveMenu inset;
+}
+
+.skin-blue .sidebar-menu .treeview-menu > li:hover > a, .skin-blue .sidebar-menu .treeview-menu > li:active > a {
+    color: $colorBackgroundPrimary;
+    font-weight: bold !important;
+}
+
+.skin-blue .sidebar-menu .treeview-menu > li.active > a, .skin-blue .sidebar-menu .treeview-menu > li > a:hover {
+    color: $colorBackgroundPrimary;
+}
+
+.skin-blue .sidebar-menu > li.active > a {
+    border-left-color: $colorActiveMenu;
+}
+
+.selected {
+    background-color: #DFEBC5 !important;
+    color: #1d2127;
+}
+
+//logo
+.main-header .logo{
+	line-height: 40px !important;
+}
+
+.logo-text-s,
+.logo-text-tudy,
+.logo-text-vn{
+	color:#ffd662;
+}
+.logo-text-up{
+	color:#47d1de;
+}
+.logo-text-s{
+	font-family: "HLT Aparo";
+	font-size: 55px;
+}
+.logo-text-tudy{
+	font-family: "Jellyka";
+	font-size: 25px;
+}
+.logo-text-up{
+	font-family: "HLT Affair";
+	font-size: 25px;
+}
+.logo-text-vn{
+	font-family: "Jellyka";
+	font-size: 25px;
+}
+@font-face {
+		font-family: "HLT Aparo";
+	    src:url("/fonts/HLT Aparo.ttf");
+	}
+@font-face {
+		font-family: "Jellyka";
+	    src:url("/fonts/Jellyka Love_and_Passion.ttf");
+	}
+@font-face {
+		font-family: "HLT Affair";
+	    src:url("/fonts/HLT Affair.ttf");
+	}
+@font-face {
+		font-family: "FORTE";
+	    src:url("/fonts/FORTE.TTF");
+	}
+	
+
+//
+.table-cus {
+  margin: 0 0 40px 0;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  display: table;
+}
+@media screen and (max-width: 580px) {
+  .table-cus {
+    display: block;
+  }
+}
+
+.row-cus {
+  display: table-row;
+  background: #f6f6f6;
+}
+.row-cus:nth-of-type(odd) {
+  background: #e9e9e9;
+}
+.row-cus.header {
+  font-weight: 900;
+  color: #ffffff;
+  background: #ea6153;
+}
+.row-cus.green {
+  background: #27ae60;
+}
+.row-cus.blue {
+  background: #2980b9;
+}
+@media screen and (max-width: 580px) {
+  .row-cus {
+    padding: 14px 0 7px;
+    display: block;
+  }
+  .row-cus.header {
+    padding: 0;
+    height: 6px;
+  }
+  .row-cus.header .cell {
+    display: none;
+  }
+  .row-cus .cell {
+    margin-bottom: 10px;
+  }
+  .row-cus .cell:before {
+    margin-bottom: 3px;
+    content: attr(data-title);
+    min-width: 98px;
+    font-size: 10px;
+    line-height: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #969696;
+    display: block;
+  }
+}
+
+.cell-cus {
+  padding: 6px 12px;
+  display: table-cell;
+}
+@media screen and (max-width: 580px) {
+  .cell-cus {
+    padding: 2px 16px;
+    display: block;
+  }
+}

@@ -16,9 +16,9 @@ namespace Upload.SpreadShirts.Areas.Upload
         {
             context.MapRoute(
                name: "Upload_SpreadShirt",
-               url: "Upload/SpreadShirt/{action}/{id}",
+               url: "SpreadShirt",
                defaults: new { action = "SpreadShirt", controller = "SpreadShirt", id = UrlParameter.Optional },
-               namespaces: new[] {""}
+               namespaces: new[] { "Upload.SpreadShirts.Areas.Upload.Controllers" }
 
             );
         }

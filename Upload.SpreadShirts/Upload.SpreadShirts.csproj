@@ -130,6 +130,7 @@
     <Compile Include="Areas\Upload\Controllers\SpreadShirtController.cs" />
     <Compile Include="Areas\Upload\Models\ApplicationUser.cs" />
     <Compile Include="Areas\Upload\Models\CoreConfig.cs" />
+    <Compile Include="Areas\Upload\Models\ExecuteUpload.cs" />
     <Compile Include="Areas\Upload\Models\OShop.cs" />
     <Compile Include="Areas\Upload\UploadAreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -147,6 +148,9 @@
       <Project>{8ad0c4ee-0dba-4570-9425-d87c25448567}</Project>
       <Name>PartialView</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

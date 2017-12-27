@@ -53,11 +53,11 @@ namespace Upload.Admin
                       "~/Assets/css/font-awesome.css"));
 
             //matrix
-            bundles.Add(new ScriptBundle("~/bundles/matrix").Include(
+            bundles.Add(new ScriptBundle("~/bundles/jscript").Include(
                 //jQuery 3
                 "~/Assets/js/jquery.min.js"
                 //jQuery UI 1.11.4
-                , "~/Assets/js/jquery-ui.min.js"
+               // , "~/Assets/js/jquery-ui.min.js"
                 //Bootstrap 3.3.7
                 , "~/Assets/js/bootstrap.min.js"
                 //Morris.js charts
@@ -66,8 +66,8 @@ namespace Upload.Admin
                 //Sparkline
                 , "~/Assets/js/jquery.sparkline.min.js"
                 //jvectormap
-                , "~/Assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"
-                , "~/Assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"
+                //, "~/Assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"
+                //, "~/Assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"
                 //jQuery Chart JS
                 , "~/Assets/plugins/chart.js/Chart.js"
                 //daterangepicker
@@ -76,8 +76,8 @@ namespace Upload.Admin
                 //datepicker
                 , "~/Assets/js/bootstrap-datepicker.min.js"
                 //CK Editor
-                , "~/Assets/plugins/ckeditor/ckeditor.js"
-                , "~/Assets/plugins/ckfinder/ckfinder.js"
+                //, "~/Assets/plugins/ckeditor/ckeditor.js"
+                //, "~/Assets/plugins/ckfinder/ckfinder.js"
                 //Bootstrap WYSIHTML5
                 , "~/Assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
                 //Slimscroll
@@ -85,27 +85,27 @@ namespace Upload.Admin
                 //FastClick
                 , "~/Assets/js/fastclick.js"
                 //DataTables
-                , "~/Assets/plugins/datatables.net/js/jquery.dataTables.min.js"
-                , "~/Assets/plugins/datatables.net-bs/js/dataTables.bootstrap.min.js"
-                , "~/Assets/plugins/datatables.net/js/dataTables.fixedColumns.min.js"
-                , "~/Assets/plugins/datatables.net/js/dataTables.select.min.js"
-                , "~/Assets/plugins/datatables.net/js/dataTables.keyTable.min.js"
+                //, "~/Assets/plugins/datatables.net/js/jquery.dataTables.min.js"
+                //, "~/Assets/plugins/datatables.net-bs/js/dataTables.bootstrap.min.js"
+                //, "~/Assets/plugins/datatables.net/js/dataTables.fixedColumns.min.js"
+                //, "~/Assets/plugins/datatables.net/js/dataTables.select.min.js"
+                //, "~/Assets/plugins/datatables.net/js/dataTables.keyTable.min.js"
                 //Sweat alert
                 , "~/Assets/plugins/sweetalert/sweetalert.min.js"
                  //Select
-                 , "~/Assets/plugins/select2/dist/js/select2.full.min.js"
+                // , "~/Assets/plugins/select2/dist/js/select2.full.min.js"
                 //AdminLTE App
                 , "~/Assets/dist/js/adminlte.min.js"
                 //CheckBox
-                , "~/Assets/plugins/iCheck/icheck.min.js"
+                //, "~/Assets/plugins/iCheck/icheck.min.js"
                 //Munti selected dropdownlist
-                , "~/Assets/dist/js/bootstrap-multiselect.js"
+                //, "~/Assets/dist/js/bootstrap-multiselect.js"
                 //, "~/Assets/dist/js/pages/dashboard.js"
                 //, "~/Assets/dist/js/demo.js"
                 //UserControl
                 , "~/Scripts/UserControl1.0.js"));
 
-            bundles.Add(new StyleBundle("~/Content/matrix").Include(
+            bundles.Add(new StyleBundle("~/Content/ltecss").Include(
                 //Bootstrap 3.3.7
                 "~/Assets/css/bootstrap.min.css"
                 //Font Awesome
@@ -132,11 +132,11 @@ namespace Upload.Admin
                 //Sweat alert
                 , "~/Assets/plugins/sweetalert/sweetalert.css"
                 //Selected
-                , "~/Assets/plugins/select2/dist/css/select2.min.css"
+                //, "~/Assets/plugins/select2/dist/css/select2.min.css"
                 //iCheck
-                , "~/Assets/plugins/iCheck/square/_all.css"
+                //, "~/Assets/plugins/iCheck/square/_all.css"
                 //Munti selected dropdownlist
-                , "~/Assets/dist/css/bootstrap-multiselect.css"
+                //, "~/Assets/dist/css/bootstrap-multiselect.css"
                 //Upload CSS
                 , "~/Content/upload/css/component.css"
                 , "~/Content/upload/css/normalize.css"

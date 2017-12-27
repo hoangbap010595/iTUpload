@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PartialView.Areas.PartialView.Models;
+using System.IO;
 
 namespace Upload.SpreadShirts.Areas.Upload.Models
 {
@@ -53,6 +54,16 @@ namespace Upload.SpreadShirts.Areas.Upload.Models
             if (sessionId != "")
                 newUrl += "&sessionId=" + sessionId;
             return t_url + newUrl;
+        }
+
+        public static string readDataFromFile(string filePath)
+        {
+            var data = "";
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                data = reader.ReadToEnd();
+            }
+            return data;
         }
     }
 }

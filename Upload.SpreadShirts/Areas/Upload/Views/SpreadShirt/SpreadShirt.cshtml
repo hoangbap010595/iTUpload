@@ -8,4 +8,172 @@
 <script src="~/Scripts/SpreadShirt/spread-core.js"></script>
 <script src="~/Scripts/SpreadShirt/spread-login.js"></script>
 
-<button class="btn btn-success" id="login">Login</button>
+<style>
+    .displayShop {
+        box-shadow: 0px 2px 5px -1px #444;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    hr{
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" data-toggle="tab">Upload</a></li>
+        <li><a href="#tab_2" data-toggle="tab">Using File</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Data</h3>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Name</label>
+                                        <input id="txtName" name="Name" type="text" class="form-control" placeholder="Enter Name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea style="max-width: 100%;" id="txtDescription" class="form-control" rows="3" placeholder="Enter description ..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Tag</label>
+                                        <textarea style="max-width: 100%;" id="txtTag" class="form-control" rows="3" placeholder="fish, monkey, shirts..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">$</span>
+                                            <input id="txtPrice" value="00.00" type="text" class="form-control" name="Price" placeholder="Enter Price">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <div class="row">
+                                <button class="btn btn-success" id="login">Login</button>
+                                <button class="btn btn-success" id="upload">Upload</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- Data input -->
+                <div class="col-md-3">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Image list</h3>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="exampleInputFile">File input</label>
+                                <input type="file" id="fInputFile" multiple accept="image/*" onchange="Spread.Events.ChangeLoadFile()">
+
+                                <p class="help-block">Choose file upload.</p>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- Image list -->
+                <div class="col-md-3">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Sale in all shops</h3>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="displayShop">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-9"><p>ID: <small>110202320</small></p></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <hr />
+                                        <h3 class="text-align-center">Ahihi</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="displayShop">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-9"><p>ID: <small>110202320</small></p></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <hr />
+                                        <h3 class="text-align-center">Ahihi</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="displayShop">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-9"><p>ID: <small>110202320</small></p></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <hr />
+                                        <h3 class="text-align-center">Ahihi</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="displayShop">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-9"><p>ID: <small>110202320</small></p></div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <hr />
+                                        <h3 class="text-align-center">Ahihi</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- Sale in all Shop -->
+            </div>
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_2">
+
+            a du
+        </div>
+        <!-- /.tab-pane -->
+    </div>
+    <!-- /.tab-content -->
+</div>
