@@ -141,6 +141,7 @@
     <Content Include="Scripts\SpreadShirt\spread-login.js" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\a.pubxml" />
     <None Include="Properties\PublishProfiles\Spread.pubxml" />
   </ItemGroup>
   <ItemGroup>
