@@ -32,6 +32,16 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
         // GET: Upload/SpreadShirt
         public ActionResult SpreadShirt()
         {
+            if (Session["USER"] != null)
+            {
+                ApplicationUser User = (ApplicationUser)Session["USER"];
+                ViewBag.Email = User.USER_ID;
+                ViewData["Shop"] = User.SHOPS;
+                ViewBag.Login = true;
+            }else
+            {
+                ViewBag.Login = false;
+            }
             return View();
         }
 

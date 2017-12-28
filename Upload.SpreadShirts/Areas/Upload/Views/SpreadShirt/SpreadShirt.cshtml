@@ -1,7 +1,10 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
+@using Upload.SpreadShirts.Areas.Upload.Models;
+
 @{
     ViewBag.Title = "SpreadShirt";
     Layout = "~/Views/Shared/_Theme.cshtml";
+    List<OShop> lsShop = (List<OShop>)ViewData["Shop"];
 }
 
 <script src="~/Scripts/SpreadShirt/spread-core.js"></script>
@@ -13,14 +16,17 @@
         padding: 10px;
         margin-bottom: 10px;
     }
-    #show-progress{
+
+    #show-progress {
         width: 100%;
         height: 300px;
         overflow-y: auto;
     }
-    #show-progress li{
-        list-style: none;
-    }
+
+        #show-progress li {
+            list-style: none;
+        }
+
     hr {
         margin-top: 0;
         margin-bottom: 0;
@@ -103,7 +109,7 @@
                 <div class="col-md-6">
                     <div class="box box-default">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Data</h3>
+                            <h3 class="box-title">Data Upload: <b>ID: [@ViewBag.Email]</b></h3>
                             <!-- /.box-tools -->
                         </div>
                         <!-- /.box-header -->
@@ -120,7 +126,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <textarea value="$name" style="max-width: 100%;" id="txtDescription" class="form-control" rows="3" placeholder="Enter description ..."></textarea>
+                                        <textarea style="max-width: 100%;" id="txtDescription" class="form-control" rows="3" placeholder="Enter description ...">$name</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +155,14 @@
                         <div class="box-footer">
                             <div class="row">
                                 <div class="col-md-12" id="action-button">
-                                    <button class="btn btn-success" id="btnShowLogin" data-toggle="modal" data-target="#modal-default">Login</button>
+                                    @if (ViewBag.Login == true)
+                                    {
+                                        <button class="btn btn-success" style="width:150px;" id="btnUpload">Upload</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-danger" style="width:150px;" id="btnShowLogin" data-toggle="modal" data-target="#modal-default">Login</button>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -185,7 +198,27 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="row" id="show-shop">
-
+                                @if (ViewData["Shop"] != null)
+                                {
+                                    foreach (OShop item in lsShop)
+                                    {
+                                        <div class="col-md-3">
+                                            <div class="displayShop">
+                                                <div class="row">
+                                                    <div class="col-md-8"><span><b>ID:</b> <small>@item.TargetID</small></span></div>
+                                                    <div class="col-md-4">
+                                                        <label class="switch">
+                                                            <input type="checkbox" class="select-item-shop" value="@item.TargetID">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <h3 class="text-align-center">@item.Name</h3>
+                                            </div>
+                                        </div>
+                                    }
+                                }
                             </div>
 
                         </div>
@@ -194,11 +227,28 @@
                     <!-- /.box -->
                 </div>
                 <!-- Sale in all Shop -->
-            </div>  
+            </div>
         </div>
         <!-- /.tab-pane -->
         <div class="tab-pane" id="tab_2">
-            File
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Data Upload: <b>ID: [@ViewBag.Email]</b></h3>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="form-group">
+                                <input type="file" id="fInputFileData" name="files" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
         </div>
         <!-- /.tab-pane -->
     </div>

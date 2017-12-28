@@ -1,25 +1,27 @@
 ﻿$(function () {
     Spread.Controls.CreateControls();
 })
-
+var sessionIndexUpload = 0;
 var Spread = {
     Controls: {
         CreateControls: function () {
-            if (sessionStorage.initialFiles === undefined) {
-                sessionStorage.initialFiles = "[]";
-                sessionIndexUpload = 0;
-            } else {
-                sessionStorage.initialFiles = "[]";
-                sessionIndexUpload = 0;
-            }
-            var initialFiles = JSON.parse(sessionStorage.initialFiles);
+            sessionStorage.initialFiles = "[]";
 
+            var initialFiles = JSON.parse(sessionStorage.initialFiles);
             keypressNumberOnly({ ctrlID: '#txtPrice' });
 
             $("#btnLogin").on('click', function (e) { Spread.Events.LoginServerSpread(e) });
+            $("#btnUpload").on('click', function (e) { Spread.Events.UploadServerSpread(e) });
+
             createKendoUpload({
                 ctrlID: "fInputFile"
                 , onSuccess: Spread.Events.ChangeLoadFile
+            })
+            createKendoUpload({
+                ctrlID: "fInputFileData"
+                , allowedExt: ThemeConfig.uploadExcelExt
+                , async: {}
+               //, onSuccess: Spread.Events.ChangeLoadFile
             })
         },
         LoadAllShop: function (allData) {
@@ -123,14 +125,16 @@ var Spread = {
                 alert({ title: "Message", icon: "warning", message: "Please choose image design !" });
                 return
             }
-
+            sessionIndexUpload = 0;
             $("html, body").animate({ scrollTop: $(document).height() }, 1000);
             Spread.Events.ProgressUpload({ filter: filter });
         },
         ProgressUpload: function (allData) {
             var dataImage = JSON.parse(sessionStorage.initialFiles);
-            if (sessionIndexUpload >= dataImage.length)
+            if (sessionIndexUpload >= dataImage.length) {
+                sessionStorage.initialFiles = "[]";
                 return;
+            }
             var imageName = dataImage[sessionIndexUpload].name;
             Spread.Events.WriteLog({ data: "Uploading: " + imageName, work: 3 })
             var filter = allData.filter;

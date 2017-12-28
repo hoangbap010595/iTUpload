@@ -12,6 +12,7 @@ var UC = [];
 var ThemeConfig = {
     colorICheck: "purple"
     , uploadImageExt: [".gif", ".jpg", ".png"]
+    , uploadExcelExt: [".csv", ".xls", ".xlsx"]
 }
 $(document).ready(function () {
     createCheckBox({ ctrlID: '.check-box' });
@@ -19,13 +20,13 @@ $(document).ready(function () {
 
 function createKendoUpload(allData) {
     var upload = $("#" + allData.ctrlID).kendoUpload({
-        async: {
+        async: allData.async ||{
             saveUrl: "upload/save",
             removeUrl: "upload/remove",
             autoUpload: true
         },
         validation: {
-            allowedExtensions: ThemeConfig.uploadImageExt
+            allowedExtensions: allData.allowedExt || ThemeConfig.uploadImageExt
             , maxFileSize: 4194304
         },
         cancel: allData.onCancel,
