@@ -105,6 +105,8 @@ namespace Upload.Admin
                 //, "~/Assets/dist/js/demo.js"
                 //Kendo
                 , "~/Scripts/kendo.all.min.js"
+                //Excel
+                , "~/Scripts/Excel/xlsx.full.min.js"
                 //UserControl
                 , "~/Scripts/UserControl1.0.js"));
 

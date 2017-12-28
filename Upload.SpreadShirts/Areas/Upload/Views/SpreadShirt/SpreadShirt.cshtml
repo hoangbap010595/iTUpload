@@ -25,6 +25,7 @@
 
         #show-progress li {
             list-style: none;
+            margin-top: 3px;
         }
 
     hr {
@@ -75,7 +76,7 @@
         }
 
     input:checked + .slider {
-        background-color: #00a65a;
+        background-color: #10c4b2;
     }
 
     input:focus + .slider {
@@ -96,6 +97,17 @@
         .slider.round:before {
             border-radius: 50%;
         }
+    .in-progress{
+        font-style: italic;
+        color: grey;
+    }
+    .in-done{
+        font-weight: bold;
+        color: darkgreen;
+    }
+    .in-error{
+         color: orangered;
+    }
 </style>
 
 <div class="nav-tabs-custom">
@@ -109,7 +121,7 @@
                 <div class="col-md-6">
                     <div class="box box-default">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Data Upload: <b>ID: [@ViewBag.Email]</b></h3>
+                            <h3 class="box-title">[Upload] <b class="pull-right">Session: <span class="lblID">@ViewBag.Email</span></b></h3>
                             <!-- /.box-tools -->
                         </div>
                         <!-- /.box-header -->
@@ -144,7 +156,7 @@
                                         <label class="control-label">Price</label>
                                         <div class="input-group">
                                             <span class="input-group-addon">$</span>
-                                            <input id="txtPrice" value="00.00" type="text" class="form-control" name="Price" placeholder="Enter Price">
+                                            <input id="txtPrice" value="00.00" type="text" class="form-control k-textbox" name="Price" placeholder="Enter Price">
                                         </div>
                                     </div>
                                 </div>
@@ -157,11 +169,11 @@
                                 <div class="col-md-12" id="action-button">
                                     @if (ViewBag.Login == true)
                                     {
-                                        <button class="btn btn-success" style="width:150px;" id="btnUpload">Upload</button>
+                                        <button class="k-button k-primary" style="width:150px;" id="btnUpload">Upload</button>
                                     }
                                     else
                                     {
-                                        <button class="btn btn-danger" style="width:150px;" id="btnShowLogin" data-toggle="modal" data-target="#modal-default">Login</button>
+                                        <button class="k-button k-primary btnShowLogin" style="width:150px;" id="btnShowLogin" data-toggle="modal" data-target="#modal-default">Login</button>
                                     }
                                 </div>
                             </div>
@@ -173,7 +185,7 @@
                 <div class="col-md-6">
                     <div class="box box-default">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Image list</h3>
+                            <h3 class="box-title">Image Design</h3>
                             <!-- /.box-tools -->
                         </div>
                         <!-- /.box-header -->
@@ -202,21 +214,21 @@
                                 {
                                     foreach (OShop item in lsShop)
                                     {
-                                        <div class="col-md-3">
-                                            <div class="displayShop">
-                                                <div class="row">
-                                                    <div class="col-md-8"><span><b>ID:</b> <small>@item.TargetID</small></span></div>
-                                                    <div class="col-md-4">
-                                                        <label class="switch">
-                                                            <input type="checkbox" class="select-item-shop" value="@item.TargetID">
-                                                            <span class="slider round"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                <h3 class="text-align-center">@item.Name</h3>
+                                <div class="col-md-3">
+                                    <div class="displayShop">
+                                        <div class="row">
+                                            <div class="col-md-8"><span><b>ID:</b> <small>@item.TargetID</small></span></div>
+                                            <div class="col-md-4">
+                                                <label class="switch">
+                                                    <input type="checkbox" class="select-item-shop" value="@item.TargetID">
+                                                    <span class="slider round"></span>
+                                                </label>
                                             </div>
                                         </div>
+                                        <hr />
+                                        <h3 class="text-align-center">@item.Name</h3>
+                                    </div>
+                                </div>
                                     }
                                 }
                             </div>
@@ -235,7 +247,7 @@
                 <div class="col-md-12">
                     <div class="box box-default">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Data Upload: <b>ID: [@ViewBag.Email]</b></h3>
+                            <h3 class="box-title">[Upload] <b class="pull-right">Session: <span class="lblID">@ViewBag.Email</span></b></h3>
                             <!-- /.box-tools -->
                         </div>
                         <!-- /.box-header -->
@@ -245,6 +257,21 @@
                             </div>
                         </div>
                         <!-- /.box-body -->
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-md-12" id="action-button-file">
+                                    @if (ViewBag.Login == true)
+                                    {
+                                        <button class="k-button k-primary" style="width:150px;" id="btnUploadUsingFile">Upload</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="k-button k-primary btnShowLogin" style="width:150px;" id="btnShowLogin" data-toggle="modal" data-target="#modal-default">Login</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-footer -->
                     </div>
                     <!-- /.box -->
                 </div>

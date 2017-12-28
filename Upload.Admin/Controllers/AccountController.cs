@@ -68,6 +68,7 @@ namespace Upload.Admin.Controllers
         //
         // POST: /Account/CreateAccount
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult CreateAccount(RegisterViewModel model)
         {
             Dictionary<string, object> lsData = new Dictionary<string, object>();

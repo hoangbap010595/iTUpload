@@ -97,7 +97,53 @@ namespace Upload.Admin.Controllers
             // Return an empty string to signify success
             return Content("");
         }
+        public ActionResult SaveExcel(IEnumerable<HttpPostedFileBase> files)
+        {
+            // The Name of the Upload component is "files"
+            if (files != null)
+            {
+                var folder = "FileUpload";
+                foreach (var file in files)
+                {
+                    // Some browsers send file names with full path. This needs to be stripped.
+                    var fileName = Path.GetFileName(file.FileName);
+                    var physicalPath = Path.Combine(Server.MapPath("~/Uploaded/" + folder), fileName);
+                    if (!Directory.Exists(Server.MapPath("~/Uploaded/" + folder)))
+                        Directory.CreateDirectory(Server.MapPath("~/Uploaded/" + folder));
+                    // The files are not actually saved in this demo
+                    file.SaveAs(physicalPath);
+                }
+            }
 
+            // Return an empty string to signify success
+            return Content("");
+        }
+
+        public ActionResult RemoveExcel(string[] fileNames)
+        {
+            // The parameter of the Remove action must be called "fileNames"
+
+            if (fileNames != null)
+            {
+                var folder = "FileUpload";
+                foreach (var fullName in fileNames)
+                {
+                    var fileName = Path.GetFileName(fullName);
+                    var physicalPath = Path.Combine(Server.MapPath("~/Uploaded/" + folder), fileName);
+                    //var path = Path.GetPath()
+                    // TODO: Verify user permissions
+
+                    if (System.IO.File.Exists(physicalPath))
+                    {
+                        // The files are not actually removed in this demo
+                        System.IO.File.Delete(physicalPath);
+                    }
+                }
+            }
+
+            // Return an empty string to signify success
+            return Content("");
+        }
         public void AppendToFile(string fullPath, Stream content)
         {
             try

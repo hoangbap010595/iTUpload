@@ -2,6 +2,7 @@
     Spread.Controls.CreateControls();
 })
 var sessionIndexUpload = 0;
+var sessionIndexUploadFile = 0;
 var Spread = {
     Controls: {
         CreateControls: function () {
@@ -12,7 +13,7 @@ var Spread = {
 
             $("#btnLogin").on('click', function (e) { Spread.Events.LoginServerSpread(e) });
             $("#btnUpload").on('click', function (e) { Spread.Events.UploadServerSpread(e) });
-
+            $("#btnUploadUsingFile").on('click', function (e) { Spread.Events.UploadServerSpreadUseFile(e) });
             createKendoUpload({
                 ctrlID: "fInputFile"
                 , onSuccess: Spread.Events.ChangeLoadFile
@@ -20,8 +21,12 @@ var Spread = {
             createKendoUpload({
                 ctrlID: "fInputFileData"
                 , allowedExt: ThemeConfig.uploadExcelExt
-                , async: {}
-               //, onSuccess: Spread.Events.ChangeLoadFile
+                , async: {
+                    saveUrl: "upload/saveexcel",
+                    removeUrl: "upload/removeexcel",
+                    autoUpload: true
+                }
+                , onSuccess: Spread.Events.OnSuccessLoadFileData
             })
         },
         LoadAllShop: function (allData) {
@@ -76,11 +81,16 @@ var Spread = {
                        alert(data);
                        Spread.Events.WriteLog({ data: "Login success!", work: 1 })
                        $("#modal-default").modal('toggle');
-                       var htmUpload = '<button class="btn btn-success" style="width:150px;" id="btnUpload">Upload</button>';
-                       $("#btnShowLogin").remove();
+                       var htmUpload = '<button class="k-button k-primary" style="width:150px;" id="btnUpload">Upload</button>';
+                       var htmUploadFile = '<button class="k-button k-primary" style="width:150px;" id="btnUploadUsingFile">Upload</button>';
+                       $(".btnShowLogin").remove();
                        $("#action-button").append(htmUpload);
+                       $("#action-button-file").append(htmUploadFile);
                        $("#btnUpload").on('click', function (e) { Spread.Events.UploadServerSpread(e) });
+                       $("#btnUploadUsingFile").on('click', function (e) { Spread.Events.UploadServerSpreadUseFile(e) });
                        $("#show-shop").empty();
+                       var uID = data.UID;
+                       $(".lblID").html(uID);
                        var shops = JSON.parse(data.shop);
                        for (var i = 0; i < shops.list.length; i++) {
 
@@ -161,6 +171,44 @@ var Spread = {
                   }
             })
         },
+        UploadServerSpreadUseFile: function (e) {
+            sessionIndexUploadFile = 0;
+            $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+
+
+        },
+        ProgressUploadUseFile: function (allData) {
+            var dataImage = JSON.parse(sessionStorage.initialFiles);
+            if (sessionIndexUploadFile >= dataImage.length) {
+                sessionStorage.initialFiles = "[]";
+                return;
+            }
+            var imageName = dataImage[sessionIndexUpload].name;
+            Spread.Events.WriteLog({ data: "Uploading: " + imageName, work: 3 })
+            var filter = allData.filter;
+            filter.Image = imageName;
+            filter.Title = filter.Title.replace("$name", imageName.split('.')[0])
+            filter.Description = filter.Description.replace("$name", imageName.split('.')[0])
+            enableButton({ ctrlID: "btnUploadUsingFile", disabled: true });
+            getDataObject({
+                url: "SpreadShirt/UploadProgress"
+               , type: "POST"
+               , filter: filter
+               , onSuccess: function (data) {
+                   Spread.Events.WriteLog({ data: data.data, work: 1 })
+                   sessionIndexUploadFile++; //Upload next Image
+                   Spread.Events.ProgressUploadUseFile({ filter: filter });
+                   enableButton({ ctrlID: "btnUploadUsingFile", disabled: false });
+               }
+                  , onError: function (error) {
+                      //console.log(error);
+                      Spread.Events.WriteLog({ data: error, work: 2 })
+                      sessionIndexUploadFile++; //Upload next Image
+                      Spread.Events.ProgressUploadUseFile({ filter: filter });
+                      enableButton({ ctrlID: "btnUploadUsingFile", disabled: false });
+                  }
+            })
+        },
         ChangeLoadFile: function (e) {
             var currentInitialFiles = JSON.parse(sessionStorage.initialFiles);
             for (var i = 0; i < e.files.length; i++) {
@@ -196,23 +244,66 @@ var Spread = {
         WriteLog: function (allData) {
             var log = $("#show-progress");
             var date = new Date();
-            var d_Time = '[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ']';
+            var d_Time = '[' + (parseInt(date.getHours()) < 0 ? '0' : '') + date.getHours() + ':' + (parseInt(date.getMinutes()) < 0 ? '0' : '') + date.getMinutes() + ':' + (parseInt(date.getSeconds()) < 0 ? '0' : '') + date.getSeconds() + ']';
             var d_Work = parseInt(allData.work);
 
-            var data = '<li>' + d_Time + ' <span>' + allData.data + '</span>.............................@work</li>';
+            var data = '<li class="@cWork">' + d_Time + ' ' + allData.data + '.............................@work</li>';
             switch (d_Work) {
                 case 1:
-                    data = data.replace("@work", "Done");
+                    data = data.replace("@work", "Done").replace("@cWork", "in-done");
                     break;
                 case 2:
-                    data = data.replace("@work", "Faild");
+                    data = data.replace("@work", "Faild").replace("@cWork", "in-error");
                     break;
                 case 3:
-                    data = data.replace("@work", "InProgress");
+                    data = data.replace("@work", "InProgress").replace("@cWork", "in-progress");
                     break;
             }
 
             log.prepend(data);
+        },
+        OnSuccessLoadFileData: function (e) {
+            var fileName =Spread.Events.GetFileInfo(e);
+            var upload = $("#fInputFileData").data("kendoUpload");
+            var files = upload.getFiles();
+
+            /* set up XMLHttpRequest */
+            var parentFolder = "/Uploaded/FileUpload/";
+            var url = parentFolder + fileName;
+            var oReq = new XMLHttpRequest();
+            oReq.open("GET", url, true);
+            oReq.responseType = "arraybuffer";
+
+            oReq.onload = function (e) {
+                var arraybuffer = oReq.response;
+
+                /* convert data to binary string */
+                var data = new Uint8Array(arraybuffer);
+                var arr = new Array();
+                for (var i = 0; i != data.length; ++i)
+                    arr[i] = String.fromCharCode(data[i]);
+                var bstr = arr.join("");
+
+                /* Call XLSX */
+                var workbook = XLSX.read(bstr, { type: "binary" });
+
+                /* DO SOMETHING WITH workbook HERE */
+                var first_sheet_name = workbook.SheetNames[0];
+                /* Get worksheet */
+                var worksheet = workbook.Sheets[first_sheet_name];
+
+                var data = XLSX.utils.sheet_to_json(worksheet);
+                console.log(data);
+                Spread.Events.WriteLog({ data: "Open file success! " + data.length + " record(s)", work: 1 })
+            }
+
+            oReq.send();
+        },
+        GetFileInfo: function (e) {
+            return $.map(e.files, function (file) {
+                var info = file.name;
+                return info;
+            }).join(", ");
         }
     }
 }

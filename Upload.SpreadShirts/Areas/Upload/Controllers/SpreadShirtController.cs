@@ -117,7 +117,8 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
 
                 //Set current Users
                 Session["USER"] = User;
-
+                
+                lsData.Add("UID", User.USER_ID);
                 lsData.Add("shop", dataShop["data"].ToString());
                 lsData.Add("message", "Đăng nhập thành công");
                 lsData.Add("icon", "success");
