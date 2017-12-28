@@ -55,9 +55,10 @@ namespace Upload.Admin
             //matrix
             bundles.Add(new ScriptBundle("~/bundles/jscript").Include(
                 //jQuery 3
-                "~/Assets/js/jquery.min.js"
+                //"~/Assets/js/jquery.min.js"
+                "~/Scripts/jquery-3.0.0.min.js"
                 //jQuery UI 1.11.4
-               // , "~/Assets/js/jquery-ui.min.js"
+                // , "~/Assets/js/jquery-ui.min.js"
                 //Bootstrap 3.3.7
                 , "~/Assets/js/bootstrap.min.js"
                 //Morris.js charts
@@ -102,6 +103,8 @@ namespace Upload.Admin
                 //, "~/Assets/dist/js/bootstrap-multiselect.js"
                 //, "~/Assets/dist/js/pages/dashboard.js"
                 //, "~/Assets/dist/js/demo.js"
+                //Kendo
+                , "~/Scripts/kendo.all.min.js"
                 //UserControl
                 , "~/Scripts/UserControl1.0.js"));
 
@@ -141,8 +144,26 @@ namespace Upload.Admin
                 , "~/Content/upload/css/component.css"
                 , "~/Content/upload/css/normalize.css"
                 //, "~/Content/upload/css/demo.css"
+                , "~/Content/kendo.common.min.css"
+                , "~/Content/kendo.flat.min.css"
+                , "~/Content/kendo.flat.mobile.min.css"
                 //Define CSS
                 , "~/Assets/css/style.css"));
+
+            //Login Page
+            bundles.Add(new StyleBundle("~/Assets/logincss").Include(
+                "~/Assets/css/bootstrap.min.css"
+                , "~/Assets/css/font-awesome.min.css"
+                , "~/Assets/css/ionicons.min.css"
+                , "~/Assets/dist/css/AdminLTE.min.css"
+                , "~/Assets/plugins/iCheck/square/_all.css"
+                , "~/Assets/css/style.css"
+                ));
+            bundles.Add(new ScriptBundle("~/bundle/loginjquery").Include(
+                  "~/Assets/js/jquery.min.js"
+                  , "~/Assets/js/bootstrap.min.js"
+                  , "~/Assets/plugins/iCheck/icheck.min.js"
+                  ));
         }
     }
 }

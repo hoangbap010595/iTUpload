@@ -11,10 +11,34 @@ var AjaxConfig = {
 var UC = [];
 var ThemeConfig = {
     colorICheck: "purple"
+    , uploadImageExt: [".gif", ".jpg", ".png"]
 }
 $(document).ready(function () {
     createCheckBox({ ctrlID: '.check-box' });
 });
+
+function createKendoUpload(allData) {
+    var upload = $("#" + allData.ctrlID).kendoUpload({
+        async: {
+            saveUrl: "upload/save",
+            removeUrl: "upload/remove",
+            autoUpload: true
+        },
+        validation: {
+            allowedExtensions: ThemeConfig.uploadImageExt
+            , maxFileSize: 4194304
+        },
+        cancel: allData.onCancel,
+        complete: allData.onComplete,
+        error: allData.onError,
+        progress: allData.onProgress,
+        remove: allData.onRemove,
+        select: allData.onSelect,
+        success: allData.onSuccess,
+        upload: allData.onUpload
+    });
+    UC[allData.ctrlID] = upload;
+}
 
 function createCKEditor(allData) {
     var ctrlID = allData.ctrlID;

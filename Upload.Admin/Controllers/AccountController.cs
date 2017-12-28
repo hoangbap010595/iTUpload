@@ -341,8 +341,7 @@ namespace Upload.Admin.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    //var
-                    //var IP = Request.ServerVariables["REMOTE_ADDR"];
+                    Session["UserName"] = model.Email;
                     return RedirectToLocal("/SpreadShirt");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -673,6 +672,12 @@ namespace Upload.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Login", "Account");
+        }
+        [HttpPost]
+        public ActionResult LogOff2()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login", "Account");

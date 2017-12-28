@@ -4,7 +4,62 @@
     ViewBag.Title = "Log in";
     Layout = "~/Views/Shared/_Login.cshtml";
 }
-<div id="loginbox">
+
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Đăng nhập hệ thống</p>
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-vertical", id = "loginform", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group has-feedback">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-cus", placeholder = "Username", value = "a@gmail.com" })
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+               @Html.PasswordFor(m => m.Password, new { @class = "form-control input-cus", placeholder = "Mật khẩu", value = "Omega@111" })
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-7">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" name="RememberMe"> Ghi nhớ mật khẩu
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-5">
+                    <button type="submit" style="float:right;" class="btn bg-orange">Đăng nhập</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        }
+        <div class="form-group login-box-footer">
+            @Html.ValidationSummary()
+        </div>
+    </div>
+    <!-- /.login-box-body -->
+</div>
+
+<!-- jQuery 3 -->
+<script src="~/Assets/js/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="~/Assets/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="~/Assets/plugins/iCheck/icheck.min.js"></script>
+
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-orange',
+            radioClass: 'iradio_square-orange',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+
+@*<div id="loginbox">
     @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-vertical", id = "loginform", role = "form" }))
     {
         <div class="control-group normal_text"> <h3><img src="~/Img/logo.png" alt="Logo" /></h3></div>
@@ -13,27 +68,24 @@
                 <div class="main_input_box">
                     <span class="add-on bg_lg"><i class="icon-user"></i></span>
                     @Html.TextBoxFor(m => m.Email, new { placeholder = "Tên đăng nhập", value = "a@gmail.com" })
-                    @*<input type="text" placeholder="Username" />*@
+                    <input type="text" placeholder="Username" />
                     <br />@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <div class="main_input_box">
-                            <span class="add-on bg_ly"><i class="icon-lock"></i></span>
-                            @Html.PasswordFor(m => m.Password, new { placeholder = "Mật khẩu", value = "Omega@111" })
-                            <br />@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+        <div class="control-group">
+            <div class="controls">
+                <div class="main_input_box">
+                    <span class="add-on bg_ly"><i class="icon-lock"></i></span>
+                    @Html.PasswordFor(m => m.Password, new { placeholder = "Mật khẩu", value = "Omega@111" })
+                    <br />@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
+            </div>
+        </div>
                 @Html.ValidationSummary()
                 <div class="form-actions">
                     <button type="submit" class="btn btn-success">Đăng nhập</button>
                 </div>
                 @Html.AntiForgeryToken()
     }
-</div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+</div>*@

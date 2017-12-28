@@ -1,19 +1,16 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
-    <link rel="icon" type="image/ico" href="~/icon1.ico">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/logincss")
-    @Scripts.Render("~/bundles/modernizr")
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login - Tool Auto Upload</title>
+    <link rel="icon" type="image/ico" href="~/spreadshirt_icon.ico">
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Assets/logincss")
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic" />
 </head>
-<body>
+<body class="hold-transition login-page background-login">
     @RenderBody()
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/loginjs")
-    @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Upload.Admin.Controllers
 {
+    [Authorize(Users = "hoangle")]
     public class HomeController : Controller
     {
         public ActionResult Index()

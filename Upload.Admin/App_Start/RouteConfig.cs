@@ -18,6 +18,12 @@ namespace Upload.Admin
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+              name: "Account_Login",
+              url: "user-login/{id}",
+              defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
+          );
         }
     }
 }

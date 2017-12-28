@@ -108,6 +108,7 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
                 //Set current Users
                 Session["USER"] = User;
 
+                lsData.Add("shop", dataShop["data"].ToString());
                 lsData.Add("message", "Đăng nhập thành công");
                 lsData.Add("icon", "success");
                 lsData.Add("result", 1);
@@ -133,11 +134,14 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
             var json = new JsonResult();
             try
             {
+                var folder = "AdminUpload";
+                if (Session["UserName"] != null)
+                    folder = Session["UserName"].ToString();
                 if (Session["USER"] != null)
                 {
                     ApplicationUser User = (ApplicationUser)Session["USER"];
 
-                    string image = @dataUpload.Image; // File image
+                    string image = Path.Combine(Server.MapPath("~/Uploaded/" + folder), @dataUpload.Image); // File image
                     string title = dataUpload.Title; // Tieu de sp
                     string description = dataUpload.Description;//Phan mo ta sp
                     string tags = dataUpload.Tag;//tag1,tag2,tag3
@@ -235,6 +239,7 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
                         return json;
                     }
                     #endregion
+                    DeleteFileUploaded(Path.GetFileName(image));
                     dResult.Add("data", "Upload & Publish finish: " + "https://partner.spreadshirt.com/designs/" + ideaId);
                     json = Json(dResult, JsonRequestBehavior.AllowGet);
                     return json;
@@ -253,7 +258,22 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
             }
 
         }
+        private void DeleteFileUploaded(string fileName)
+        {
+            //Delete File 
+            var folder = "AdminUpload";
+            if (Session["UserName"] != null)
+                folder = Session["UserName"].ToString();
+            var physicalPath = Path.Combine(Server.MapPath("~/Uploaded/" + folder), fileName);
 
+            // TODO: Verify user permissions
+
+            if (System.IO.File.Exists(physicalPath))
+            {
+                // The files are not actually removed in this demo
+                System.IO.File.Delete(physicalPath);
+            }
+        }
         private List<string> getPublishingDetailsPublish(ApplicationUser User,string shopName)
         {
             List<string> data = new List<string>();

@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Theme.cshtml";
 }
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/SpreadShirt/spread-core.js"></script>
 <script src="~/Scripts/SpreadShirt/spread-login.js"></script>
 
@@ -14,10 +13,83 @@
         padding: 10px;
         margin-bottom: 10px;
     }
-    hr{
+    #show-progress{
+        width: 100%;
+        height: 300px;
+        overflow-y: auto;
+    }
+    #show-progress li{
+        list-style: none;
+    }
+    hr {
         margin-top: 0;
         margin-bottom: 0;
     }
+
+    .image-scroll {
+        height: 450px;
+        overflow-y: auto;
+    }
+    /* The switch - the box around the slider */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 55px;
+        height: 25px;
+    }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            display: none;
+        }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #00a65a;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
 </style>
 
 <div class="nav-tabs-custom">
@@ -40,7 +112,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="control-label">Name</label>
-                                        <input id="txtName" name="Name" type="text" class="form-control" placeholder="Enter Name">
+                                        <input id="txtName" value="$name" name="Name" type="text" class="form-control" placeholder="Enter Name">
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +120,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <textarea style="max-width: 100%;" id="txtDescription" class="form-control" rows="3" placeholder="Enter description ..."></textarea>
+                                        <textarea value="$name" style="max-width: 100%;" id="txtDescription" class="form-control" rows="3" placeholder="Enter description ..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -76,27 +148,25 @@
                         <!-- /.box-body -->
                         <div class="box-footer">
                             <div class="row">
-                                <button class="btn btn-success" id="login">Login</button>
-                                <button class="btn btn-success" id="upload">Upload</button>
+                                <div class="col-md-12" id="action-button">
+                                    <button class="btn btn-success" id="btnShowLogin" data-toggle="modal" data-target="#modal-default">Login</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <!-- /.box -->
                 </div>
                 <!-- Data input -->
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="box box-default">
                         <div class="box-header with-border">
                             <h3 class="box-title">Image list</h3>
                             <!-- /.box-tools -->
                         </div>
                         <!-- /.box-header -->
-                        <div class="box-body">
+                        <div class="box-body image-scroll">
                             <div class="form-group">
-                                <label for="exampleInputFile">File input</label>
-                                <input type="file" id="fInputFile" multiple accept="image/*" onchange="Spread.Events.ChangeLoadFile()">
-
-                                <p class="help-block">Choose file upload.</p>
+                                <input type="file" id="fInputFile" name="files" multiple accept="image/*">
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -104,7 +174,9 @@
                     <!-- /.box -->
                 </div>
                 <!-- Image list -->
-                <div class="col-md-3">
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <div class="box box-default">
                         <div class="box-header with-border">
                             <h3 class="box-title">Sale in all shops</h3>
@@ -112,68 +184,93 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <div class="displayShop">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-9"><p>ID: <small>110202320</small></p></div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <hr />
-                                        <h3 class="text-align-center">Ahihi</h3>
-                                    </div>
-                                </div>
+                            <div class="row" id="show-shop">
+
                             </div>
-                            <div class="displayShop">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-9"><p>ID: <small>110202320</small></p></div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <hr />
-                                        <h3 class="text-align-center">Ahihi</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="displayShop">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-9"><p>ID: <small>110202320</small></p></div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <hr />
-                                        <h3 class="text-align-center">Ahihi</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="displayShop">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-9"><p>ID: <small>110202320</small></p></div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <hr />
-                                        <h3 class="text-align-center">Ahihi</h3>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                         <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
                 </div>
                 <!-- Sale in all Shop -->
-            </div>
+            </div>  
         </div>
         <!-- /.tab-pane -->
         <div class="tab-pane" id="tab_2">
-
-            a du
+            File
         </div>
         <!-- /.tab-pane -->
     </div>
     <!-- /.tab-content -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success box-solid">
+            <div class="box-header">
+                <h3 class="box-title">Progress Upload</h3>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row">
+                    <ul id="show-progress"></ul>
+                </div>
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <!-- Sale in all Shop -->
+</div>
+<div class="modal fade in" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Login Spread</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Username</label>
+                                <div class="col-md-8">
+                                    <input id="txtUsername" name="Username" type="text" class="form-control pull-right">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Password</label>
+                                <div class="col-md-8">
+                                    <input id="txtPassword" name="Password" type="password" class="form-control pull-right">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-off"></span>
+                    Close
+                </button>
+                <button type="button" class="btn btn-danger" id="btnLogin">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    Login
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
