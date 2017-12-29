@@ -1,0 +1,386 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@using Upload.Teechip.Areas.Upload.Models;
+@{
+    ViewBag.Title = "Teechip Pro";
+    Layout = "~/Views/Shared/_Theme.cshtml";
+
+    List<OProduct> lsProduct = (List<OProduct>)ViewData["Product"];
+}
+<script src="~/Scripts/Teechip/teechip-pro.js"></script>
+
+<style>
+    .displayShop {
+        box-shadow: 0px 2px 5px -1px #444;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    #show-progress {
+        width: 100%;
+        height: 300px;
+        overflow-y: auto;
+    }
+
+        #show-progress li {
+            list-style: none;
+            margin-top: 3px;
+        }
+
+    hr {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .image-scroll {
+        height: 300px;
+        overflow-y: auto;
+    }
+
+    .product-scroll {
+        height: 900px;
+        overflow-y: auto;
+    }
+
+    .show-color {
+        padding-left: 15px;
+    }
+
+        .show-color li {
+            float: left;
+            list-style: none;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+    /* The switch - the box around the slider */
+    .round {
+        position: relative;
+    }
+
+        .round label {
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            height: 30px;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 30px;
+        }
+
+            .round label:after {
+                border: 2px solid #fff;
+                border-top: none;
+                border-right: none;
+                content: "";
+                height: 6px;
+                left: 7px;
+                opacity: 0;
+                position: absolute;
+                top: 8px;
+                transform: rotate(-45deg);
+                width: 12px;
+            }
+
+        .round input[type="checkbox"] {
+            visibility: hidden;
+        }
+
+            .round input[type="checkbox"]:checked + label {
+                background-color: #66bb6a;
+                border-color: #66bb6a;
+            }
+
+                .round input[type="checkbox"]:checked + label:after {
+                    opacity: 1;
+                }
+
+    .k-textbox {
+        margin-top: 7px;
+        width: -webkit-fill-available;
+        width: -moz-available;
+    }
+
+    .in-progress {
+        font-style: italic;
+        color: grey;
+    }
+
+    .in-done {
+        font-weight: bold;
+        color: darkgreen;
+    }
+
+    .in-error {
+        color: orangered;
+    }
+</style>
+
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" data-toggle="tab">Upload</a></li>
+        <li><a href="#tab_2" data-toggle="tab">Using File</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">[Upload] <b class="pull-right">Session: <span class="lblID"> @ViewBag.Email</span></b></h3>
+                                    <!-- /.box-tools -->
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Title</label>
+                                                <input id="txtTitle" value="$name" name="Title" type="text" class="form-control" placeholder="Enter Title">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <textarea style="max-width: 100%;" id="txtDescription" class="form-control" rows="3" placeholder="Enter description ...">$name</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Category</label>
+                                                <textarea style="max-width: 100%;" id="txtCategory" class="form-control" rows="3" placeholder="fish, monkey, shirts..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">URL</label>
+                                                <input id="txtUrl" value="$url" name="Url" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Store</label>
+                                                <input id="txtStore" name="Store" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- /.box-body -->
+                                <div class="box-footer">
+                                    <div class="row">
+                                        <div class="col-md-12" id="action-button">
+                                            @if (ViewBag.Login == true)
+                                            {
+                                                <button class="k-button k-primary" style="width:150px;" id="btnUpload">Upload</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="k-button k-primary btnShowLogin" style="width:150px;" id="btnShowLogin" data-toggle="modal" data-target="#modal-default">Login</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Image Design</h3>
+                                    <!-- /.box-tools -->
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body image-scroll">
+                                    <div class="form-group">
+                                        <input type="file" id="fInputFile" name="files" multiple accept="image/*">
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+
+                    <!-- /.box -->
+                </div>
+                <div class="col-md-6">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Products</h3>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="row product-scroll" id="show-product">
+                                @if (ViewData["Product"] != null)
+                                {
+                                    foreach (OProduct product in lsProduct)
+                                    {
+                                        <div class="col-md-12">
+                                            <div class="displayShop">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <img width="115" height="140" src="@product.Colors[0].Image" alt="Image" />
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="row">
+                                                            <div class="col-md-9">
+                                                                <h4 style="font-weight:700; color: peru;">@product.Name</h4>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="text" id="@product.Id" value="@product.Msrp" class="form-control k-textbox" />
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <ul id="show-color" class="show-color">
+                                                                @foreach (var item in product.Colors)
+                                                                {
+                                                                    <li style="border-radius:50%; width:30px;height:30px;">
+                                                                        <div class="round">
+                                                                            <input name="@product.Code" type="checkbox" id="@product.Code-ck-@item.Hex" value="@item.Name" />
+                                                                            <label for="@product.Code-ck-@item.Hex" style="background-color: #@item.Hex;"></label>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+                <!-- Image list -->
+            </div>
+        </div>
+        <!-- /.tab-pane -->
+        <div class="tab-pane" id="tab_2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">[Upload] <b class="pull-right">Session: <span class="lblID"> @ViewBag.Email</span></b></h3>
+                            <!-- /.box-tools -->
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="form-group">
+                                <input type="file" id="fInputFileData" name="files" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-md-12" id="action-button-file">
+                                    @if (ViewBag.Login == true)
+                                    {
+                                        <button class="k-button k-primary" style="width:150px;" id="btnUploadUsingFile">Upload</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="k-button k-primary btnShowLogin" style="width:150px;" id="btnShowLogin" data-toggle="modal" data-target="#modal-default">Login</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+        </div>
+        <!-- /.tab-pane -->
+    </div>
+    <!-- /.tab-content -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success box-solid">
+            <div class="box-header">
+                <h3 class="box-title">Progress Upload</h3>
+                <div class="box-tools pull-left">
+                    <img id="imgUploading" hidden src="~/Content/Flat/loading.gif" alt="Upload" />
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row">
+                    <ul id="show-progress"></ul>
+                </div>
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <!-- Sale in all Shop -->
+</div>
+<div class="modal fade in" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Login Spread</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Username</label>
+                                <div class="col-md-8">
+                                    <input id="txtUsername" name="Username" type="text" class="form-control pull-right">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Password</label>
+                                <div class="col-md-8">
+                                    <input id="txtPassword" name="Password" type="password" class="form-control pull-right">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-off"></span>
+                    Close
+                </button>
+                <button type="button" class="btn btn-danger" id="btnLogin">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    Login
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
