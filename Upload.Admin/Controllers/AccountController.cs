@@ -343,6 +343,7 @@ namespace Upload.Admin.Controllers
             {
                 case SignInStatus.Success:
                     Session["UserName"] = model.Email;
+                    Session["CurrUser"] = UserManager.FindByName(model.Email);
                     return RedirectToLocal("/SpreadShirt");
                 case SignInStatus.LockedOut:
                     return View("Lockout");

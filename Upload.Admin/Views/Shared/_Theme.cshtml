@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using Upload.Admin.Models;
+@{
+    ApplicationUser user = new ApplicationUser();
+    if (Session["CurrUser"] != null)
+    {
+        user = (ApplicationUser)Session["CurrUser"];
+    }
+    else
+    {
+        Response.Redirect("/Account/Login");
+    }
+
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -35,50 +48,32 @@
                     <ul class="nav navbar-nav">
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
-                            @*<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    @if (currGiaoVien != null)
-                                    {
-                                        <img src="@currGiaoVien.DuongDanAnh" class="user-image" alt="User Image">
-                                    }
-                                    else
-                                    {
-                                        <img src="~/Assets/dist/img/avatar5.png" class="user-image" alt="User Image">
-                                    }
-                                    <span class="hidden-xs">Hi! </span>
-                                    <span class="hidden-xs">@currUser.UserName</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <!-- User image -->
-                                    <li class="user-header">
-                                        @if (currGiaoVien != null)
-                                        {
-                                            <img src="@currGiaoVien.DuongDanAnh" class="img-circle" alt="User Image">
-                                        }
-                                        else
-                                        {
-                                            <img src="~/Assets/dist/img/avatar5.png" class="img-circle" alt="User Image">
-                                        }
-                                        <p>
-                                            <span>@currUser.FirstName</span>
-                                            @if (@Session["IsAuthorized"] != null)
-                                            {
-                                                <span>- Administrators</span>
-                                            }
-                                            else
-                                            {
-                                                <span>- Users</span>
-                                            }
-                                            <small>Member of StudyUp.vn</small>
-                                        </p>
-                                    </li>
-                                    <!-- Menu Body -->
-                                    <!-- Menu Footer-->
-                                    <li class="user-footer">
-                                        <div class="pull-right">
-                                            <a href="/Account/LogOff" class="btn bg-primary btn-flat"><i class="fa fa-sign-out"></i> Sign out</a>
-                                        </div>
-                                    </li>
-                                </ul>*@
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/Assets/dist/img/avatar5.png" class="user-image" alt="User Image">
+                                <span class="hidden-xs">Hi! </span>
+                                <span class="hidden-xs">@user.UserName</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="~/Assets/dist/img/avatar5.png" class="img-circle" alt="User Image">
+                                    <p>
+                                        <span>@user.Email</span>
+
+                                        <small>Auto Upload Pro Software</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-right">
+                                        <form action="/Account/LogOff" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn bg-primary btn-flat"><i class="fa fa-sign-out"></i> Sign out</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
