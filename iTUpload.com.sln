@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Dashboard", "Upload.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.SpreadShirts", "Upload.SpreadShirts\Upload.SpreadShirts.csproj", "{705C9C1A-10B7-436D-AEBF-CEC98FAEA1D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload.Teechip", "Upload.Teechip\Upload.Teechip.csproj", "{04A00DF9-BE0C-481D-8482-D531A8546AC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{705C9C1A-10B7-436D-AEBF-CEC98FAEA1D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{705C9C1A-10B7-436D-AEBF-CEC98FAEA1D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{705C9C1A-10B7-436D-AEBF-CEC98FAEA1D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04A00DF9-BE0C-481D-8482-D531A8546AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A00DF9-BE0C-481D-8482-D531A8546AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A00DF9-BE0C-481D-8482-D531A8546AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A00DF9-BE0C-481D-8482-D531A8546AC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,5 +51,6 @@ Global
 		{8AD0C4EE-0DBA-4570-9425-D87C25448567} = {C576E022-2EA2-4237-A7AD-B2AC161CB15E}
 		{E67AD241-214C-44C0-B30D-DCF1482CFAB3} = {4F40D6BD-4A3A-4D4B-B2B2-25A5278C0631}
 		{705C9C1A-10B7-436D-AEBF-CEC98FAEA1D8} = {4F40D6BD-4A3A-4D4B-B2B2-25A5278C0631}
+		{04A00DF9-BE0C-481D-8482-D531A8546AC2} = {4F40D6BD-4A3A-4D4B-B2B2-25A5278C0631}
 	EndGlobalSection
 EndGlobal
