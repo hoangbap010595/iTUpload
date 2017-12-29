@@ -1,13 +1,12 @@
 ﻿$(function () {
     Spread.Controls.CreateControls();
 })
-var sessionIndexUpload = 0;
-var sessionIndexUploadFile = 0;
+
 var Spread = {
     Controls: {
         CreateControls: function () {
             sessionStorage.initialFiles = "[]";
-
+            var sessionStorageData = [];
             var initialFiles = JSON.parse(sessionStorage.initialFiles);
             keypressNumberOnly({ ctrlID: '#txtPrice' });
 
@@ -135,79 +134,106 @@ var Spread = {
                 alert({ title: "Message", icon: "warning", message: "Please choose image design !" });
                 return
             }
-            sessionIndexUpload = 0;
+            $("#imgUploading").removeAttr("hidden");
             $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-            Spread.Events.ProgressUpload({ filter: filter });
+            enableButton({ ctrlID: "btnUpload", disabled: true });
+            Spread.Events.ProgressUpload({ sessionIndexUpload: 0 });
         },
         ProgressUpload: function (allData) {
             var dataImage = JSON.parse(sessionStorage.initialFiles);
-            if (sessionIndexUpload >= dataImage.length) {
-                sessionStorage.initialFiles = "[]";
-                return;
+            var index = allData.sessionIndexUpload;
+            var filter = Spread.Controls.Filter();
+            try { 
+                if (index >= dataImage.length) {
+                    $("#imgUploading").attr("hidden", "hidden");
+                    sessionStorage.initialFiles = "[]";
+                    enableButton({ ctrlID: "btnUpload", disabled: false });
+                    return;
+                }
+                var imageName = dataImage[index].name;
+                Spread.Events.WriteLog({ data: "Uploading: " + imageName, work: 3 })
+                //Config filter
+                filter.Image = imageName;
+                filter.Title = filter.Title.replace("$name", imageName.split('.')[0])
+                filter.Description = filter.Description.replace("$name", imageName.split('.')[0]);
+                getDataObject({
+                    url: "SpreadShirt/UploadProgress"
+                   , type: "POST"
+                   , filter: filter
+                   , onSuccess: function (data) {
+                       Spread.Events.WriteLog({ data: data.data, work: 1 })
+                       index++; //Upload next Image
+                       Spread.Events.ProgressUpload({ sessionIndexUpload: index });
+                   }
+                      , onError: function (error) {
+                          //console.log(error);
+                          Spread.Events.WriteLog({ data: error, work: 2 })
+                          index++; //Upload next Image
+                          Spread.Events.ProgressUpload({ sessionIndexUpload: index });
+                      }
+                })
+            } catch (error) {
+                Spread.Events.WriteLog({ data: error, work: 2 });
+                index++; //Upload next Image
+                Spread.Events.ProgressUpload({ sessionIndexUpload: index });
             }
-            var imageName = dataImage[sessionIndexUpload].name;
-            Spread.Events.WriteLog({ data: "Uploading: " + imageName, work: 3 })
-            var filter = allData.filter;
-            filter.Image = imageName;
-            filter.Title = filter.Title.replace("$name", imageName.split('.')[0])
-            filter.Description = filter.Description.replace("$name", imageName.split('.')[0])
-            enableButton({ ctrlID: "btnUpload", disabled: true });
-            getDataObject({
-                url: "SpreadShirt/UploadProgress"
-               , type: "POST"
-               , filter: filter
-               , onSuccess: function (data) {
-                   Spread.Events.WriteLog({ data: data.data, work: 1 })
-                   sessionIndexUpload++; //Upload next Image
-                   Spread.Events.ProgressUpload({ filter: filter });
-                   enableButton({ ctrlID: "btnUpload", disabled: false });
-               }
-                  , onError: function (error) {
-                      //console.log(error);
-                      Spread.Events.WriteLog({ data: error, work: 2 })
-                      sessionIndexUpload++; //Upload next Image
-                      Spread.Events.ProgressUpload({ filter: filter });
-                      enableButton({ ctrlID: "btnUpload", disabled: false });
-                  }
-            })
         },
         UploadServerSpreadUseFile: function (e) {
-            sessionIndexUploadFile = 0;
+            var dataUpload = sessionStorageData;
+            if (dataUpload.length < 1) {
+                alert({ title: "Message", icon: "warning", message: "Please choose file data import!" });
+                return
+            }
+            $("#imgUploading").removeAttr("hidden");
+            enableButton({ ctrlID: "btnUploadUsingFile", disabled: true });
             $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-
-
+            Spread.Events.ProgressUploadUseFile({ sessionIndexUpload: 0 });
         },
         ProgressUploadUseFile: function (allData) {
-            var dataImage = JSON.parse(sessionStorage.initialFiles);
-            if (sessionIndexUploadFile >= dataImage.length) {
-                sessionStorage.initialFiles = "[]";
-                return;
+            var dataUpload = sessionStorageData;
+            var index = allData.sessionIndexUpload;
+            var filter = Spread.Controls.Filter();
+            try {
+                if (index >= dataUpload.length) {
+                    $("#imgUploading").attr("hidden", "hidden");
+                    enableButton({ ctrlID: "btnUploadUsingFile", disabled: false });
+                    return;
+                }
+                var imageName = dataUpload[index].Image;
+                var title = dataUpload[index].Title;
+                var description = dataUpload[index].Description;
+                var tag = dataUpload[index].Tag;
+                var shop = dataUpload[index].Shop;
+                var price = dataUpload[index].Price;
+                Spread.Events.WriteLog({ data: "Uploading: " + imageName, work: 3 })
+                //Config filter
+                filter.Image = imageName;
+                filter.Title = title;
+                filter.Description = description;
+                filter.Tag = tag;
+                filter.Shop = shop;
+                filter.Price = price;
+                getDataObject({
+                    url: "SpreadShirt/UploadProgress"
+                   , type: "POST"
+                   , filter: filter
+                   , onSuccess: function (data) {
+                       Spread.Events.WriteLog({ data: data.data, work: 1 })
+                       index++; //Upload next Image
+                       Spread.Events.ProgressUploadUseFile({ sessionIndexUpload: index });
+                   }
+                      , onError: function (error) {
+                          //console.log(error);
+                          Spread.Events.WriteLog({ data: error, work: 2 })
+                          index++; //Upload next Image
+                          Spread.Events.ProgressUploadUseFile({ sessionIndexUpload: index });
+                      }
+                })
+            } catch (error) {
+                Spread.Events.WriteLog({ data: error, work: 2 });
+                index++; //Upload next Image
+                Spread.Events.ProgressUploadUseFile({ sessionIndexUpload: index });
             }
-            var imageName = dataImage[sessionIndexUpload].name;
-            Spread.Events.WriteLog({ data: "Uploading: " + imageName, work: 3 })
-            var filter = allData.filter;
-            filter.Image = imageName;
-            filter.Title = filter.Title.replace("$name", imageName.split('.')[0])
-            filter.Description = filter.Description.replace("$name", imageName.split('.')[0])
-            enableButton({ ctrlID: "btnUploadUsingFile", disabled: true });
-            getDataObject({
-                url: "SpreadShirt/UploadProgress"
-               , type: "POST"
-               , filter: filter
-               , onSuccess: function (data) {
-                   Spread.Events.WriteLog({ data: data.data, work: 1 })
-                   sessionIndexUploadFile++; //Upload next Image
-                   Spread.Events.ProgressUploadUseFile({ filter: filter });
-                   enableButton({ ctrlID: "btnUploadUsingFile", disabled: false });
-               }
-                  , onError: function (error) {
-                      //console.log(error);
-                      Spread.Events.WriteLog({ data: error, work: 2 })
-                      sessionIndexUploadFile++; //Upload next Image
-                      Spread.Events.ProgressUploadUseFile({ filter: filter });
-                      enableButton({ ctrlID: "btnUploadUsingFile", disabled: false });
-                  }
-            })
         },
         ChangeLoadFile: function (e) {
             var currentInitialFiles = JSON.parse(sessionStorage.initialFiles);
@@ -263,41 +289,46 @@ var Spread = {
             log.prepend(data);
         },
         OnSuccessLoadFileData: function (e) {
-            var fileName =Spread.Events.GetFileInfo(e);
-            var upload = $("#fInputFileData").data("kendoUpload");
-            var files = upload.getFiles();
+            try {
+                var fileName = Spread.Events.GetFileInfo(e);
+                var upload = $("#fInputFileData").data("kendoUpload");
+                var files = upload.getFiles();
 
-            /* set up XMLHttpRequest */
-            var parentFolder = "/Uploaded/FileUpload/";
-            var url = parentFolder + fileName;
-            var oReq = new XMLHttpRequest();
-            oReq.open("GET", url, true);
-            oReq.responseType = "arraybuffer";
+                /* set up XMLHttpRequest */
+                var parentFolder = "/Uploaded/FileUpload/";
+                var url = parentFolder + fileName;
+                var oReq = new XMLHttpRequest();
+                oReq.open("GET", url, true);
+                oReq.responseType = "arraybuffer";
 
-            oReq.onload = function (e) {
-                var arraybuffer = oReq.response;
+                oReq.onload = function (e) {
+                    var arraybuffer = oReq.response;
 
-                /* convert data to binary string */
-                var data = new Uint8Array(arraybuffer);
-                var arr = new Array();
-                for (var i = 0; i != data.length; ++i)
-                    arr[i] = String.fromCharCode(data[i]);
-                var bstr = arr.join("");
+                    /* convert data to binary string */
+                    var data = new Uint8Array(arraybuffer);
+                    var arr = new Array();
+                    for (var i = 0; i != data.length; ++i)
+                        arr[i] = String.fromCharCode(data[i]);
+                    var bstr = arr.join("");
 
-                /* Call XLSX */
-                var workbook = XLSX.read(bstr, { type: "binary" });
+                    /* Call XLSX */
+                    var workbook = XLSX.read(bstr, { type: "binary" });
 
-                /* DO SOMETHING WITH workbook HERE */
-                var first_sheet_name = workbook.SheetNames[0];
-                /* Get worksheet */
-                var worksheet = workbook.Sheets[first_sheet_name];
+                    /* DO SOMETHING WITH workbook HERE */
+                    var first_sheet_name = workbook.SheetNames[0];
+                    /* Get worksheet */
+                    var worksheet = workbook.Sheets[first_sheet_name];
 
-                var data = XLSX.utils.sheet_to_json(worksheet);
-                console.log(data);
-                Spread.Events.WriteLog({ data: "Open file success! " + data.length + " record(s)", work: 1 })
+                    var data = XLSX.utils.sheet_to_json(worksheet);
+                    console.log(data);
+                    sessionStorageData = data;
+                    Spread.Events.WriteLog({ data: "Open file success! " + data.length + " record(s)", work: 1 })
+                }
+
+                oReq.send();
+            } catch (error) {
+                sessionStorageData = [];
             }
-
-            oReq.send();
         },
         GetFileInfo: function (e) {
             return $.map(e.files, function (file) {
