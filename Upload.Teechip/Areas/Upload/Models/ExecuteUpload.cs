@@ -12,5 +12,7 @@ namespace Upload.Teechip.Areas.Upload.Models
         public string Description { get; set; }
         public string Category { get; set; }
         public string Url { get; set; }
+        public List<string> LineID { get; set; }
+        public List<string> RetailID { get; set; }
     }
 }

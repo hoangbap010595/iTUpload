@@ -27,6 +27,23 @@ var Teechip = {
                 }
                 , onSuccess: Teechip.Events.OnSuccessLoadFileData
             })
+
+            getDataObject({
+                url: "Teechip/GetCategory"
+               , type: "GET"
+               , onSuccess: function (data) {
+                   var category = $("#txtCategory").kendoAutoComplete({
+                       dataSource: data,
+                       filter: "startswith",
+                       placeholder: "Select category...",
+                       separator: ", "
+                   });
+               }
+                  , onError: function (error) {
+                      alert(error);
+                  }
+            })
+
         },
         LoadAllProduct: function (allData) {
             var product = allData.product;
@@ -45,7 +62,9 @@ var Teechip = {
             html += '                       <h4 style="font-weight:700; color: peru;">' + product.Name + '</h4>';
             html += '                   </div>';
             html += '               <div class="col-md-3">';
-            html += '                   <input type="text" id="' + product.Id + '" value="' + product.Msrp + '" class="form-control k-textbox" />';
+            html += '                   <input type="text" id="' + product.Code + '-pro-id" value="' + product.Id + '" hidden />'
+            html += '                   <input type="text" id="' + product.Code + '-print-size" value="' + product.PrintSize + '" hidden />'
+            html += '                   <input type="text" id="' + product.Code + '-price" value="' + product.Msrp + '" class="form-control k-textbox" />';
             html += '               </div>';
             html += '           </div>';
             html += '               <hr />';
@@ -62,27 +81,32 @@ var Teechip = {
             var color = '';
             color += '<li style="border-radius:50%; width:30px;height:30px;">';
             color += '  <div class="round">';
-            color += '      <input name="@Code" type="checkbox" id="@Code-ck-@color" value="@color" />';
-            color += '      <label for="@Code-ck-@color" style="background-color: #@color;"></label>';
+            color += '      <input name="@Code" type="checkbox" id="@Code-ck-@HexColor" value="@NameColor" />';
+            color += '      <label for="@Code-ck-@HexColor" style="background-color: #@HexColor;"></label>';
             color += '  </div>';
             color += '</li>';
 
             var htmlColor = ''
             for (var i = 0; i < product.Colors.length; i++) {
                 var x = color;
-                htmlColor += replaceAll(x, "@color", product.Colors[i].Hex);
+                x = replaceAll(x, "@NameColor", product.Colors[i].Name);
+                x = replaceAll(x, "@HexColor", product.Colors[i].Hex);
+                htmlColor += x;
             }
             html = html.replace("@Color", htmlColor);
             html = replaceAll(html, "@Code", code);
             $("#show-product").append(html);
         },
         Filter: function () {
+            var Themes = Teechip.Events.GetDesignSelected();
             var Image = "C:\\Users\\HoangLe\\Desktop\\Tool up Teechipshirt\\Upload\\98.png";
 
             var Title = EncodeVietNamese($("#txtTitle").val());
             var Description = EncodeVietNamese($("#txtDescription").val());
             var Category = EncodeVietNamese($("#txtCategory").val());
             var Url = EncodeVietNamese($("#txtUrl").val());
+            var LineID = Themes.PrintSize;
+            var RetailID = Themes.Colors;
 
             var d = {
                 Image: Image
@@ -90,6 +114,8 @@ var Teechip = {
                 , Description: Description
                 , Category: Category
                 , Url: Url
+                , LineID: LineID
+                , RetailID: RetailID
             }
             return d;
         }
@@ -143,15 +169,15 @@ var Teechip = {
                 alert({ title: "Message", icon: "warning", message: "Please enter field description!" });
                 return
             }
-            if (filter.Tag == "") {
-                alert({ title: "Message", icon: "warning", message: "Please enter field tag!" });
+            if (filter.Category == "") {
+                alert({ title: "Message", icon: "warning", message: "Please enter field category!" });
                 return
-            } else if (filter.Tag.split(',').length < 3) {
-                alert({ title: "Message", icon: "warning", message: "Please enter field tag more than 3 keyword (Ex: tag1, tag2, tag3)" });
+            } else if (filter.Category.split(',').length < 1 || filter.Category.split(',').length > 3) {
+                alert({ title: "Message", icon: "warning", message: "Please enter field tag more than 1 and less than 3 category (Ex: fish, baby, people)" });
                 return
             }
-            if (filter.Price > 20 || filter.Price < 0) {
-                alert({ title: "Message", icon: "warning", message: "Please enter price between $00.00 and $20.00" });
+            if (filter.LineID.length < 1) {
+                alert({ title: "Message", icon: "warning", message: "Please choose style!" });
                 return
             }
             if (dataImage.length < 1) {
@@ -178,10 +204,10 @@ var Teechip = {
                 Teechip.Events.WriteLog({ data: "Uploading: " + imageName, work: 3 })
                 //Config filter
                 filter.Image = imageName;
-                filter.Title = filter.Title.replace("$name", imageName.split('.')[0])
-                filter.Description = filter.Description.replace("$name", imageName.split('.')[0]);
+                //filter.Title = filter.Title.replace("$name", imageName.split('.')[0])
+                //filter.Description = filter.Description.replace("$name", imageName.split('.')[0]);
                 getDataObject({
-                    url: "TeechipShirt/UploadProgress"
+                    url: "Teechip/UploadProgress"
                    , type: "POST"
                    , filter: filter
                    , onSuccess: function (data) {
@@ -238,7 +264,7 @@ var Teechip = {
                 filter.Shop = shop;
                 filter.Price = price;
                 getDataObject({
-                    url: "TeechipShirt/UploadProgress"
+                    url: "Teechip/UploadProgress"
                    , type: "POST"
                    , filter: filter
                    , onSuccess: function (data) {
@@ -360,14 +386,44 @@ var Teechip = {
                 return info;
             }).join(", ");
         },
-        GetProductSelected: function () {
+        GetProductSelected: function (allData) {
             var values = new Array();
-            $.each($("input[name='TC0']:checked"), function () {
+            $.each($("input[name='" + allData.groupName + "']:checked"), function () {
                 values.push($(this).val());
-                // or you can do something to the actual checked checkboxes by working directly with  'this'
-                // something like $(this).hide() (only something useful, probably) :P
             });
-            console.log(values)
+            //console.log(values)
+            return values;
+        },
+        GetDesignSelected: function () {
+            var data2SendBulkCode = "[\"TC0\",\"TC1\",\"TC6\",\"TC1001\",\"TC5\",\"TC2\",\"TC15\",\"TC1000\",\"TC4\",\"TC12\",\"TC7\",\"TC10\",\"TC13\",\"TC17\",\"TC2000\",\"TC2001\",\"TC2002\",\"TC30\",\"TC3001\",\"TC1002\",\"TC25\",\"TC3002\",\"TC4001\",\"TC4002\"]";
+            var dataBulkCode = JSON.parse(data2SendBulkCode);
+            //var TC0 = [], TC1 = [], TC6 = [], TC1001 = [], TC5 = [], TC2 = [], TC15 = [], TC1000 = [], TC4 = []
+            //    , TC12 = [], TC7 = [], TC10 = [], TC13 = [], TC17 = [], TC2000 = [], TC2001 = [], TC2002 = [], TC30 = []
+            //    , TC30 = [], TC3001 = [], TC1002 = [], TC25 = [], TC3002 = [], TC4001 = [], TC4002 = []
+            var a = {};
+            var t_color = new Array();
+            var t_printSize = new Array();
+            for (var i = 0; i < dataBulkCode.length; i++) {
+                var crrCode = dataBulkCode[i];
+                var colors = Teechip.Events.GetProductSelected({ groupName: crrCode });
+                if (colors.length > 0) {
+                    a[crrCode] = colors;
+                    var proID = $("#" + crrCode + "-pro-id").val();
+                    var printSize = $("#" + crrCode + "-print-size").val();
+                    t_printSize.push(printSize);
+                    var price = $("#" + crrCode + "-price").val();
+                    for (var j = 0; j < colors.length; j++) {
+                        var data2SendRetail = "{\"designLineId\": \"@" + printSize + "\",\"productId\":\"" + proID + "\",\"color\":\"" + colors[j] + "\",\"price\":" + price + ",\"images\":[]}";
+                        t_color.push(data2SendRetail);
+                    }
+                }
+            }
+            var d = {
+                PrintSize: $.unique(t_printSize),
+                Colors: t_color
+            }
+            console.log(d);
+            return d;
         }
     }
 }

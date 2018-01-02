@@ -47,6 +47,22 @@ namespace Upload.Teechip.Areas.Upload.Controllers
             return View();
         }
 
+        [HttpGet]
+        public JsonResult GetCategory()
+        {
+            List<string> lsCate = new List<string>();
+            var file = Server.MapPath("~/App_Data");
+            var fileName = Path.Combine(file, "teechip_category.txt");
+            string rs = CoreConfig.readDataFromFile(fileName);
+            JArray jArray = JArray.Parse(rs);
+            foreach (var item in jArray)
+            {
+                lsCate.Add(item["name"].ToString());
+            }
+            var json = Json(lsCate, JsonRequestBehavior.AllowGet);
+            return json;
+        }
+
         [HttpPost]
         public JsonResult ExecuteLogin(string username, string password)
         {
@@ -153,7 +169,6 @@ namespace Upload.Teechip.Areas.Upload.Controllers
             }
 
         }
-
         //1.Upload From FormData
         [HttpPost]
         public JsonResult UploadProgress(ExecuteUpload dataUploadTC)
@@ -185,12 +200,11 @@ namespace Upload.Teechip.Areas.Upload.Controllers
                         else
                             uUrl = text_All.Replace(" ", "").Trim().Substring(0, 16);
                     else
-                        uUrl = uUrl.Replace(" ", "").Trim();
-
+                        uUrl = uUrl.Replace(" ", "").Trim().Replace("$url", text_All);
                     uUrl += DateTime.Now.ToString("mmssfff");
 
                     var urlUploadImage = "https://scalable-licensing.s3.amazonaws.com/";
-                    if (!System.IO.File.Exists(dataUploadTC.Image))
+                    if (!System.IO.File.Exists(uImage))
                     {
                         dResult.Add("data", "File not found: " + Path.GetFileName(uImage));
                         json = Json(dResult, JsonRequestBehavior.AllowGet);
@@ -260,25 +274,38 @@ namespace Upload.Teechip.Areas.Upload.Controllers
 
                     #region ===============Step 2: Create Design Line & Get DesignLine ID===============
                     Dictionary<string, object> lineID = new Dictionary<string, object>();
-                    //if (lsUserControlTheme.Find(x => ((UCItemProduct)x).Product.PrintSize == "general-standard") != null)
-                    //    lineID.Add("LineIDGENRAL", getDesignLineID(User, data2SendLineIDGENRAL));
-                    //if (lsUserControlTheme.Find(x => ((UCItemProduct)x).Product.PrintSize == "mug-standard") != null)
-                    //    lineID.Add("LineIDMUG", getDesignLineID(User, data2SendLineIDMUG));
-                    //if (lsUserControlTheme.Find(x => ((UCItemProduct)x).Product.PrintSize == "poster-standard") != null)
-                    //    lineID.Add("LineIDPOSTER", getDesignLineID(User, data2SendLineIDPOSTER));
-                    //if (lsUserControlTheme.Find(x => ((UCItemProduct)x).Product.PrintSize == "case-standard") != null)
-                    //    lineID.Add("LineIDCASE", getDesignLineID(User, data2SendLineIDCASE));
-                    //if (lsUserControlTheme.Find(x => ((UCItemProduct)x).Product.PrintSize == "general-slim") != null)
-                    //    lineID.Add("LineIDGENERAL_SLIM", getDesignLineID(User, data2SendLineIDGENERAL_SLIM));
-                    //if (lsUserControlTheme.Find(x => ((UCItemProduct)x).Product.PrintSize == "hat-standard") != null)
-                    //    lineID.Add("LineIDHAT", getDesignLineID(User, data2SendLineIDHAT));
-                    //if (lsUserControlTheme.Find(x => ((UCItemProduct)x).Product.PrintSize == "general-reduced") != null)
-                    //    lineID.Add("LineIDREDUCED", getDesignLineID(User, data2SendLineIDREDUCED));
+                    foreach (string item in dataUploadTC.LineID)
+                    {
+                        switch (item)
+                        {
+                            case "mug-standard":
+                                lineID.Add("LineIDMUG", getDesignLineID(User, data2SendLineIDMUG));
+                                break;
+                            case "poster-standard":
+                                lineID.Add("LineIDPOSTER", getDesignLineID(User, data2SendLineIDPOSTER));
+                                break;
+                            case "case-standard":
+                                lineID.Add("LineIDCASE", getDesignLineID(User, data2SendLineIDCASE));
+                                break;
+                            case "general-slim":
+                                lineID.Add("LineIDGENERAL_SLIM", getDesignLineID(User, data2SendLineIDGENERAL_SLIM));
+                                break;
+                            case "hat-standard":
+                                lineID.Add("LineIDHAT", getDesignLineID(User, data2SendLineIDHAT));
+                                break;
+                            case "general-reduced":
+                                lineID.Add("LineIDREDUCED", getDesignLineID(User, data2SendLineIDREDUCED));
+                                break;
+                            default:
+                                lineID.Add("LineIDGENRAL", getDesignLineID(User, data2SendLineIDGENRAL));
+                                break;
+                        }
+                    }
                     #endregion
 
                     //Step 3 -- Tham số cần truyền: 
                     //      1. productId, color, price: người dùng chọn
-                    var objIDReail = getAllRetailIDFromDesignID(lineID);
+                    var objIDReail = getAllRetailIDFromDesignID(User, dataUploadTC.RetailID, lineID);
 
                     //Step 4 -- Nhận giá trị 1 mảng _IDDesignRetail từ Step 3
                     var data2SendCampaigns = "{\"url\":\"" + uUrl + "\",\"title\":\"" + uTitle + "\",\"description\":\"" + uDescription + "\",\"duration\":24,\"policies\":{\"forever\":true,\"fulfillment\":24,\"private\":false,\"checkout\":\"direct\"},\"social\":{\"trackingTags\":{}},\"entityId\":\"" + User.EntityID + "\",\"upsells\":[],\"tags\":{\"style\":[" + uCategory + "]},\"related\": " + objIDReail + "}";
@@ -331,11 +358,6 @@ namespace Upload.Teechip.Areas.Upload.Controllers
             wLines.ContentType = "application/json";
             wLines.PreAuthenticate = true;
             wLines.Headers.Add("Authorization", user.Authorization);
-            wLines.ServicePoint.Expect100Continue = false;
-            wLines.ProtocolVersion = HttpVersion.Version11;
-            wLines.Timeout = 90000;
-            wLines.ReadWriteTimeout = 90000;
-            wLines.KeepAlive = true;
 
             Dictionary<string, object> dataUploadLines = PostDataAPI(wLines, data2Send);
             var rsUploadLines = dataUploadLines["data"].ToString();
@@ -348,48 +370,57 @@ namespace Upload.Teechip.Areas.Upload.Controllers
             return objUploadLines["_id"].ToString();
         }
         //Step 3: Get Retail ID
-        private string getAllRetailIDFromDesignID(Dictionary<string, object> dataDesignID)
+        private string getAllRetailIDFromDesignID(ApplicationUser user, List<string> themes, Dictionary<string, object> dataDesignID)
         {
             List<Dictionary<string, object>> lsData = new List<Dictionary<string, object>>();
             Dictionary<string, object> data;
             List<string> lsCommand = new List<string>();
-            //b1
-            List<Dictionary<string, object>> themes = null; //listCurrentThemes();
-            foreach (Dictionary<string, object> item in themes)
+
+            foreach (string item in themes)
             {
                 var designID = "";
-                switch (item["printSize"].ToString())
+                var objThemes = JObject.Parse(item);
+                var t_printSize = objThemes["designLineId"].ToString();
+                switch (t_printSize)
                 {
-                    case "mug-standard":
+                    case "@mug-standard":
                         designID = dataDesignID["LineIDMUG"].ToString();
+                        var x1 = item.Replace(t_printSize, designID);
+                        lsCommand.Add(x1);
                         break;
-                    case "poster-standard":
+                    case "@poster-standard":
                         designID = dataDesignID["LineIDPOSTER"].ToString();
+                        var x2 = item.Replace(t_printSize, designID);
+                        lsCommand.Add(x2);
                         break;
-                    case "case-standard":
+                    case "@case-standard":
                         designID = dataDesignID["LineIDCASE"].ToString();
+                        var x3 = item.Replace(t_printSize, designID);
+                        lsCommand.Add(x3);
                         break;
-                    case "general-slim":
+                    case "@general-slim":
                         designID = dataDesignID["LineIDGENERAL_SLIM"].ToString();
+                        var x4 = item.Replace(t_printSize, designID);
+                        lsCommand.Add(x4);
                         break;
-                    case "hat-standard":
+                    case "@hat-standard":
                         designID = dataDesignID["LineIDHAT"].ToString();
+                        var x5 = item.Replace(t_printSize, designID);
+                        lsCommand.Add(x5);
                         break;
-                    case "general-reduced":
+                    case "@general-reduced":
                         designID = dataDesignID["LineIDREDUCED"].ToString();
+                        var x6 = item.Replace(t_printSize, designID);
+                        lsCommand.Add(x6);
                         break;
                     default:
                         designID = dataDesignID["LineIDGENRAL"].ToString();
+                        var x7 = item.Replace(t_printSize, designID);
+                        lsCommand.Add(x7);
                         break;
                 }
-                var colors = (List<string>)item["colors"];
-                foreach (string color in colors)
-                {
-                    var data2SendRetail = "{\"designLineId\":\"" + designID + "\",\"productId\":\"" + item["productId"] + "\",\"color\":\"" + color + "\",\"price\":" + item["price"] + ",\"images\":[]}";
-                    lsCommand.Add(data2SendRetail);
-                }
             }
-            foreach (var item in lsCommand)
+            foreach (var item2 in lsCommand)
             {
                 try
                 {
@@ -398,14 +429,15 @@ namespace Upload.Teechip.Areas.Upload.Controllers
                     wRetail.Accept = "application/json, text/plain, */*";
                     wRetail.ContentType = "application/json";
                     wRetail.PreAuthenticate = true;
-                    wRetail.Headers.Add("Authorization", User.Authorization);
+                    wRetail.Headers.Add("Authorization", user.Authorization);
 
-                    Dictionary<string, object> dataUploadRetail = PostDataAPI(wRetail, item);
+                    Dictionary<string, object> dataUploadRetail = PostDataAPI(wRetail, item2);
                     var rsUploadRetail = dataUploadRetail["data"].ToString();
                     var statusRetail = int.Parse(dataUploadRetail["status"].ToString());
                     if (statusRetail == -1)
                     {
                         //ApplicationLibary.writeLogThread(lsBoxLog, "Step 3: " + rsUploadRetail, 2);
+                        continue;
                     }
                     else
                     {
@@ -420,6 +452,7 @@ namespace Upload.Teechip.Areas.Upload.Controllers
                 catch (Exception ex)
                 {
                     //ApplicationLibary.writeLogThread(lsBoxLog, ex.Message, 2);
+                    continue;
                 }
             }
             var jsData = JsonConvert.SerializeObject(lsData);
@@ -463,11 +496,15 @@ namespace Upload.Teechip.Areas.Upload.Controllers
             var currKQ = kq.Replace("(", "|").Replace(")", "|");
             var x = currKQ.Split('|');
             string ressult = "";
+            int i = 0;
             foreach (string item in x)
             {
+                if (i >= 200)
+                    break;
                 var crrText = item.Trim();
                 if (crrText != "" && crrText != " " && ressult.IndexOf(crrText) == -1)
                     ressult += crrText.Trim() + ",";
+                i++;
             }
             return ressult;
         }

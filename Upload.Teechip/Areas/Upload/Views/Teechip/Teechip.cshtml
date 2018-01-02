@@ -37,7 +37,7 @@
     }
 
     .product-scroll {
-        height: 900px;
+        height: 825px;
         overflow-y: auto;
     }
 
@@ -100,6 +100,9 @@
         width: -webkit-fill-available;
         width: -moz-available;
     }
+    .k-autocomplete{
+        width: 100%;
+    }
 
     .in-progress {
         font-style: italic;
@@ -153,9 +156,10 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Category</label>
-                                                <textarea style="max-width: 100%;" id="txtCategory" class="form-control" rows="3" placeholder="fish, monkey, shirts..."></textarea>
+                                                <label>Category</label><br />
+                                                <input style="max-width: 100%;" id="txtCategory" class="form-control" placeholder="fish, monkey, shirts..." />
                                             </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="row">
@@ -240,7 +244,9 @@
                                                                 <h4 style="font-weight:700; color: peru;">@product.Name</h4>
                                                             </div>
                                                             <div class="col-md-3">
-                                                                <input type="text" id="@product.Id" value="@product.Msrp" class="form-control k-textbox" />
+                                                                <input type="text" id="@product.Code-pro-id" value="@product.Id" hidden />
+                                                                <input type="text" id="@product.Code-print-size" value="@product.PrintSize" hidden />
+                                                                <input type="text" id="@product.Code-price" value="@product.Msrp" class="form-control k-textbox" />
                                                             </div>
                                                         </div>
                                                         <hr />
@@ -341,7 +347,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title">Login Spread</h4>
+                <h4 class="modal-title">Login Teechip</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
