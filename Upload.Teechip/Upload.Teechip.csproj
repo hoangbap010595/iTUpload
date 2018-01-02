@@ -135,7 +135,6 @@
     <Compile Include="Areas\Upload\Models\OColor.cs" />
     <Compile Include="Areas\Upload\Models\OProduct.cs" />
     <Compile Include="Areas\Upload\UploadAreaRegistration.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Upload\Views\Teechip\Teechip.cshtml" />

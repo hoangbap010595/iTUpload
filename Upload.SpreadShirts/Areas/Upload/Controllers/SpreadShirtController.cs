@@ -444,6 +444,7 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
                     {
                         htmlString = reader.ReadToEnd();
                     }
+                    wResponse.Close();
                 }
 
                 dataReturn.Add("cookies", cookies);
@@ -491,7 +492,7 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
             {
                 htmlString = reader.ReadToEnd();
             }
-
+            wResponse.Close();
             Dictionary<string, object> dataReturn = new Dictionary<string, object>();
             dataReturn.Add("cookies", cookies);
             dataReturn.Add("data", htmlString);
@@ -554,9 +555,11 @@ namespace Upload.SpreadShirts.Areas.Upload.Controllers
                 wresp = wr.GetResponse();
                 Stream stream2 = wresp.GetResponseStream();
                 StreamReader reader2 = new StreamReader(stream2);
+ 
                 data.Add("location", wresp.Headers["Location"]);
                 data.Add("data", reader2.ReadToEnd());
                 data.Add("status", 1);
+                wresp.Close();
             }
             catch (Exception ex)
             {

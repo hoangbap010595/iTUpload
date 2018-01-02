@@ -585,8 +585,10 @@ namespace Upload.Teechip.Areas.Upload.Controllers
                 wresp = wr.GetResponse();
                 Stream stream2 = wresp.GetResponseStream();
                 StreamReader reader2 = new StreamReader(stream2);
+
                 data.Add("data", wresp.Headers["Location"]);
                 data.Add("status", 1);
+                wresp.Close();
             }
             catch (Exception ex)
             {
@@ -634,13 +636,14 @@ namespace Upload.Teechip.Areas.Upload.Controllers
                     if (cookie.Name.Contains("x-xsrf-token") || cookie.Name.Contains("XSRF-TOKEN"))
                         currToken = cookie.Value;
                     cookies.Add(cookie);
-                }
+                } 
 
                 String htmlString;
                 using (var reader = new StreamReader(wResponse.GetResponseStream()))
                 {
                     htmlString = reader.ReadToEnd();
                 }
+                wResponse.Close();
                 dataReturn.Add("cookies", cookies);
                 dataReturn.Add("data", htmlString);
                 dataReturn.Add("status", 1);
@@ -692,6 +695,7 @@ namespace Upload.Teechip.Areas.Upload.Controllers
                 htmlString = reader.ReadToEnd();
             }
 
+            wResponse.Close();
             Dictionary<string, object> dataReturn = new Dictionary<string, object>();
             dataReturn.Add("cookies", cookies);
             dataReturn.Add("data", htmlString);
