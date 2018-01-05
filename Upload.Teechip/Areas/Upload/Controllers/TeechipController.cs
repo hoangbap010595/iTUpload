@@ -187,11 +187,11 @@ namespace Upload.Teechip.Areas.Upload.Controllers
 
                     //Tiêu đề dùng chung
                     string uImage = Path.Combine(Server.MapPath("~/Uploaded/" + folder), @dataUploadTC.Image); // File image
-                    string text_All = Path.GetFileName(uImage).Split('.')[0].ToString();
+                    string text_All = Path.GetFileName(@dataUploadTC.Image).Split('.')[0].ToString();
                     //cấu hình dữ liệu
                     var uTitle = dataUploadTC.Title.Replace("$name", text_All); //txtTitle.Text
-                    var uDescription = @"<div>" + dataUploadTC.Description.Replace("$name", text_All) + "</div>"; //memoDescription.Text.Trim()
-                                                                                                                  //var uCategory = ApplicationLibary.convertStringToJson(memoCategory.Text);
+                    var uDescription = @"<div>" + dataUploadTC.Description.Replace("$name", text_All).Replace("\n", "<br/>").Replace("\r", "") + "</div>"; //memoDescription.Text.Trim()
+                                                                                                                                                           //var uCategory = ApplicationLibary.convertStringToJson(memoCategory.Text);
                     var uCategory = ApplicationLibary.convertStringToJson(getStringCategory(dataUploadTC.Category));
                     var uUrl = dataUploadTC.Url.ToLower();
                     if (string.IsNullOrEmpty(uUrl) || uUrl == "$url")
@@ -636,7 +636,7 @@ namespace Upload.Teechip.Areas.Upload.Controllers
                     if (cookie.Name.Contains("x-xsrf-token") || cookie.Name.Contains("XSRF-TOKEN"))
                         currToken = cookie.Value;
                     cookies.Add(cookie);
-                } 
+                }
 
                 String htmlString;
                 using (var reader = new StreamReader(wResponse.GetResponseStream()))

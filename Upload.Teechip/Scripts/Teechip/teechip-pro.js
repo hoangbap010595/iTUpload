@@ -198,6 +198,7 @@ var Teechip = {
                     $("#imgUploading").attr("hidden", "hidden");
                     sessionStorage.initialFiles = "[]";
                     enableButton({ ctrlID: "btnUpload", disabled: false });
+                    Teechip.Events.WriteLog({ data: "Upload finish " + index + "/" + dataImage.length, work: 1 })
                     return;
                 }
                 var imageName = dataImage[index].name;
@@ -229,10 +230,15 @@ var Teechip = {
             }
         },
         UploadServerTeechipUseFile: function (e) {
+            var filter = Teechip.Controls.Filter();
             var dataUpload = sessionStorageData;
             if (dataUpload.length < 1) {
                 alert({ title: "Message", icon: "warning", message: "Please choose file data import!" });
-                return
+                return;
+            }
+            if (filter.LineID.length < 1) {
+                alert({ title: "Message", icon: "warning", message: "Please choose style!" });
+                return;
             }
             $("#imgUploading").removeAttr("hidden");
             enableButton({ ctrlID: "btnUploadUsingFile", disabled: true });
@@ -247,22 +253,23 @@ var Teechip = {
                 if (index >= dataUpload.length) {
                     $("#imgUploading").attr("hidden", "hidden");
                     enableButton({ ctrlID: "btnUploadUsingFile", disabled: false });
+                    Teechip.Events.WriteLog({ data: "Upload finish " + index + "/" + dataUpload.length, work: 1 })
                     return;
                 }
                 var imageName = dataUpload[index].Image;
                 var title = dataUpload[index].Title;
                 var description = dataUpload[index].Description;
-                var tag = dataUpload[index].Tag;
-                var shop = dataUpload[index].Shop;
-                var price = dataUpload[index].Price;
+                var category = dataUpload[index].Category == null;
+                var url = dataUpload[index].URL;
+                var store = dataUpload[index].Store;
                 Teechip.Events.WriteLog({ data: "Uploading: " + imageName, work: 3 })
                 //Config filter
                 filter.Image = imageName;
                 filter.Title = title;
                 filter.Description = description;
-                filter.Tag = tag;
-                filter.Shop = shop;
-                filter.Price = price;
+                filter.Category = category;
+                filter.Url = url;
+                //filter.Store = store;
                 getDataObject({
                     url: "Teechip/UploadProgress"
                    , type: "POST"
@@ -313,7 +320,6 @@ var Teechip = {
                 values = "";
             } else {
                 values = items.join(',');
-                console.log(values);
             }
             return values;
         },
@@ -370,7 +376,6 @@ var Teechip = {
                     var worksheet = workbook.Sheets[first_sheet_name];
 
                     var data = XLSX.utils.sheet_to_json(worksheet);
-                    console.log(data);
                     sessionStorageData = data;
                     Teechip.Events.WriteLog({ data: "Open file success! " + data.length + " record(s)", work: 1 })
                 }
@@ -422,7 +427,6 @@ var Teechip = {
                 PrintSize: $.unique(t_printSize),
                 Colors: t_color
             }
-            console.log(d);
             return d;
         }
     }

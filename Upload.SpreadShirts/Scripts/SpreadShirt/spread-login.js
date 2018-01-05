@@ -148,6 +148,7 @@ var Spread = {
                     $("#imgUploading").attr("hidden", "hidden");
                     sessionStorage.initialFiles = "[]";
                     enableButton({ ctrlID: "btnUpload", disabled: false });
+                    Spread.Events.WriteLog({ data: "Upload finish " + index + "/" + dataImage.length, work: 1 })
                     return;
                 }
                 var imageName = dataImage[index].name;
@@ -197,6 +198,7 @@ var Spread = {
                 if (index >= dataUpload.length) {
                     $("#imgUploading").attr("hidden", "hidden");
                     enableButton({ ctrlID: "btnUploadUsingFile", disabled: false });
+                    Spread.Events.WriteLog({ data: "Upload finish " + index + "/" + dataUpload.length, work: 1 })
                     return;
                 }
                 var imageName = dataUpload[index].Image;
@@ -263,7 +265,6 @@ var Spread = {
                 values = "";
             } else {
                 values = items.join(',');
-                console.log(values);
             }
             return values;
         },
@@ -320,7 +321,6 @@ var Spread = {
                     var worksheet = workbook.Sheets[first_sheet_name];
 
                     var data = XLSX.utils.sheet_to_json(worksheet);
-                    console.log(data);
                     sessionStorageData = data;
                     Spread.Events.WriteLog({ data: "Open file success! " + data.length + " record(s)", work: 1 })
                 }

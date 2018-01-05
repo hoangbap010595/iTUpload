@@ -563,6 +563,7 @@
     <Content Include="Content\fonts\glyphs\KendoUIGlyphs.svg" />
     <Content Include="Content\fonts\glyphs\WebComponentsIcons.svg" />
     <Content Include="Content\images\back.png" />
+    <Content Include="Content\images\intro-bg3.jpg" />
     <Content Include="Content\images\kendoui.svg" />
     <Content Include="Content\images\wp8_icons.png" />
     <Content Include="Content\images\wp8_inverseicons.png" />
@@ -571,6 +572,12 @@
     <Content Include="Content\kendo.default.mobile.min.css" />
     <Content Include="Content\kendo.flat.min.css" />
     <Content Include="Content\kendo.flat.mobile.min.css" />
+    <Content Include="Content\theme\images\logo-white%402x.png" />
+    <Content Include="Content\theme\images\sprite.png" />
+    <Content Include="Content\theme\slick.css" />
+    <Content Include="Content\theme\style.css" />
+    <Content Include="Content\theme\vendor\functions.js" />
+    <Content Include="Content\theme\vendor\jquery-1.12.4.min.js" />
     <Content Include="icon1.ico" />
     <Content Include="icon2.ico" />
     <Content Include="img\breadcrumb.png" />
@@ -719,6 +726,7 @@
     <Content Include="Content\fonts\DejaVu\DejaVuSerif-BoldItalic.ttf" />
     <Content Include="Content\fonts\DejaVu\DejaVuSerif-Italic.ttf" />
     <Content Include="Content\fonts\DejaVu\DejaVuSerif.ttf" />
+    <Content Include="Content\theme\vendor\slick.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Excel\xlsx.full.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
